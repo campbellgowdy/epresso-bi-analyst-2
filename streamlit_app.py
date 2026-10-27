@@ -7,8 +7,8 @@ import analytics
 
 MAX_QUESTIONS = 15  # per-session limit for the assistant
 
-st.set_page_config(page_title='E-Presso BI Analyst', layout='wide')
-st.title('E-Presso BI Analyst')
+st.set_page_config(page_title='Hello World', layout='wide')
+st.title('Hello World')
 st.caption('Starter app. Replace this line with a description of your own application.')
 
 
