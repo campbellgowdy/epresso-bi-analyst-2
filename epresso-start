@@ -1,0 +1,387 @@
+"""Assistant: a dispatcher plus a router.
+The router (rules now, a language model later) only CHOOSES a tool and its
+arguments. Our code RUNS the tool. Nothing here executes model-written code."""
+from __future__ import annotations
+
+import analytics
+from analytics import ToolResult
+
+# The ONLY things the assistant may do. Add your own tools here.
+TOOLS = {
+    'get_total': {
+        'fn': analytics.get_total,
+        'params': {'value_col', 'filters'},
+        'description': 'Sum a numeric column, optionally filtered.',
+    },
+    'group_total': {
+        'fn': analytics.group_total,
+        'params': {'value_col', 'group_col', 'filters'},
+        'description': 'Sum a numeric column by group (store, channel, year, ...).',
+    },
+    'data_quality_report': {
+        'fn': analytics.data_quality_report,
+        'params': set(),
+        'description': 'Report duplicates and missing values in the loaded data.',
+    },
+}
+
+UNSUPPORTED = ('I can only answer questions that my approved analytical functions can '
+               'calculate from the loaded data: ' + ', '.join(TOOLS) + '. '
+               'I cannot answer that one.')
+
+# For when you add a language model: keep these rules in the system prompt.
+SYSTEM_PROMPT = """You are an analytical assistant for E-Presso managers.
+Rules:
+- Only state numbers that appear in a tool result. Never estimate or recall figures.
+- Always call a tool before making a numerical claim.
+- State the scope (which filters/period) of every answer.
+- Separate Findings (from tool results), Interpretation, and Next steps.
+- Revenue is not profit. Association is not causation.
+- If the data cannot support a conclusion, say so and name the missing information.
+- Never ask for, run, or write code. Never modify data."""
+
+
+def run_tool(name: str, args: dict, df, log: list) -> ToolResult:
+    """The dispatcher: validate the request, run the function, log the call."""
+    if name not in TOOLS:
+        result = analytics._error(name, f'Unknown tool: {name}')
+    else:
+        unexpected = set(args) - TOOLS[name]['params']
+        if unexpected:
+            result = analytics._error(name, f'Unexpected argument(s): {sorted(unexpected)}')
+        else:
+            result = TOOLS[name]['fn'](df, **args)
+    log.append({'tool': name, 'arguments': args, 'result': result.to_dict()})
+    return result
+
+
+def rules_router(question: str, df):
+    """Option B router. TODO: add rules for the tools YOU build.
+    Returns (tool_name, arguments) or None if the question is unsupported."""
+    q = question.lower()
+    if any(w in q for w in ('missing', 'duplicate', 'quality', 'blank')):
+        return 'data_quality_report', {}
+    return None
+
+
+def llm_router(question: str, df):
+    """Option A router. TODO: after the rules-based version works, ask a model that
+    supports function calling to choose from TOOLS. Return (name, args) or None."""
+    raise NotImplementedError('Add the language-model router after your tools are tested.')
+
+
+def format_findings(result: ToolResult) -> str:
+    if result.error:
+        return f'The request could not be completed: {result.error}'
+    return f'{result.definition}: {result.value}  (rows used: {result.rows_used})'
+
+
+def answer_question(question: str, df, mode: str = 'rules') -> dict:
+    log: list = []
+    routed = rules_router(question, df) if mode == 'rules' else llm_router(question, df)
+    if routed is None:
+        return {'scope': 'n/a', 'findings': UNSUPPORTED, 'interpretation': '',
+                'next_steps': '', 'tool_log': log}
+    name, args = routed
+    result = run_tool(name, args, df, log)
+    return {
+        'scope': str(result.scope),
+        'findings': format_findings(result),
+        'interpretation': ' '.join(result.caveats),
+        'next_steps': '',
+        'tool_log': log,
+    }
+
+"""Business logic. Keep Streamlit code OUT of this file so every function can be
+tested on its own and reused by the assistant."""
+from __future__ import annotations
+
+import io
+from dataclasses import asdict, dataclass, field
+
+import pandas as pd
+
+EXCEL_EXT = ('.xlsx', '.xlsm', '.xls')
+TEXT_EXT = ('.csv', '.txt', '.tsv')
+
+
+# ---------------------------------------------------------------- loading
+def excel_sheet_names(file_bytes: bytes) -> list[str]:
+    return pd.ExcelFile(io.BytesIO(file_bytes)).sheet_names
+
+
+def load_table(file_bytes: bytes, filename: str, sheet_name=0) -> pd.DataFrame:
+    """Read an uploaded CSV / TXT / TSV / Excel file into a DataFrame."""
+    name = filename.lower()
+    buffer = io.BytesIO(file_bytes)
+    if name.endswith(EXCEL_EXT):
+        return pd.read_excel(buffer, sheet_name=sheet_name)
+    if name.endswith(TEXT_EXT):
+        return pd.read_csv(buffer, sep=None, engine='python')  # sniffs the delimiter
+    raise ValueError(f'Unsupported file type: {filename}')
+
+
+def profile_table(df: pd.DataFrame) -> dict:
+    """Basic profile: size, duplicates, missing values, data types."""
+    missing = df.isna().sum()
+    return {
+        'rows': len(df),
+        'columns': df.shape[1],
+        'duplicate_rows': int(df.duplicated().sum()),
+        'missing': pd.DataFrame({
+            'column': missing.index,
+            'missing': missing.values,
+            'pct_missing': (missing.values / max(len(df), 1) * 100).round(2),
+        }),
+        'dtypes': pd.DataFrame({'column': df.columns, 'dtype': df.dtypes.astype(str).values}),
+    }
+
+
+# ---------------------------------------------------------- tool contract
+@dataclass
+class ToolResult:
+    """Every analytical function returns this. The assistant may only narrate it.
+    Keep `value` to plain Python types (numbers, strings, dicts, lists)."""
+    tool: str
+    value: object
+    definition: str
+    scope: dict
+    rows_used: int
+    caveats: list = field(default_factory=list)
+    error: str | None = None
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+def _error(tool: str, message: str, scope: dict | None = None) -> ToolResult:
+    return ToolResult(tool=tool, value=None, definition='', scope=scope or {},
+                      rows_used=0, caveats=[], error=message)
+
+
+def _apply_filters(df: pd.DataFrame, filters: dict | None):
+    """Validate filters against the LOADED data, then apply them."""
+    for col, wanted in (filters or {}).items():
+        if col not in df.columns:
+            return df, f'Unknown column: {col}'
+        wanted_list = list(wanted) if isinstance(wanted, (list, tuple, set)) else [wanted]
+        valid = set(df[col].dropna().unique())
+        bad = [w for w in wanted_list if w not in valid]
+        if bad:
+            examples = sorted(map(str, valid))[:20]
+            return df, f'{bad} not found in column {col}. Valid values include: {examples}'
+        df = df[df[col].isin(wanted_list)]
+    return df, None
+
+
+# ------------------------------------------------------ analytical tools
+def get_total(df: pd.DataFrame, value_col: str, filters: dict | None = None) -> ToolResult:
+    """Sum of one numeric column, optionally filtered. EXAMPLE tool: replace the
+    generic column names with your own definition of revenue."""
+    name = 'get_total'
+    if value_col not in df.columns:
+        return _error(name, f'Unknown column: {value_col}')
+    subset, err = _apply_filters(df, filters)
+    if err:
+        return _error(name, err, {'filters': filters})
+    values = pd.to_numeric(subset[value_col], errors='coerce')
+    n_bad = int(values.isna().sum())
+    caveats = ['This is a sum of the chosen column. Revenue is not profit.']
+    if n_bad:
+        caveats.append(f'{n_bad} row(s) had a missing or non-numeric {value_col} and were excluded.')
+    return ToolResult(tool=name, value=float(values.sum()), definition=f'Sum of {value_col}',
+                      scope={'filters': filters or 'none (all rows)'},
+                      rows_used=int(values.notna().sum()), caveats=caveats)
+
+
+def group_total(df: pd.DataFrame, value_col: str, group_col: str,
+                filters: dict | None = None) -> ToolResult:
+    """Sum of one numeric column by group (store, channel, year, ...)."""
+    name = 'group_total'
+    for col in (value_col, group_col):
+        if col not in df.columns:
+            return _error(name, f'Unknown column: {col}')
+    subset, err = _apply_filters(df, filters)
+    if err:
+        return _error(name, err, {'filters': filters})
+    work = subset.assign(**{value_col: pd.to_numeric(subset[value_col], errors='coerce')})
+    n_bad = int(work[value_col].isna().sum())
+    n_nogroup = int(work[group_col].isna().sum())
+    grouped = work.dropna(subset=[value_col, group_col]).groupby(group_col)[value_col].sum()
+    caveats = ['Sums of the chosen column. Revenue is not profit.']
+    if n_bad:
+        caveats.append(f'{n_bad} row(s) with missing or non-numeric {value_col} were excluded.')
+    if n_nogroup:
+        caveats.append(f'{n_nogroup} row(s) with a missing {group_col} were excluded.')
+    return ToolResult(tool=name, value={str(k): float(v) for k, v in grouped.items()},
+                      definition=f'Sum of {value_col} by {group_col}',
+                      scope={'filters': filters or 'none (all rows)'},
+                      rows_used=int(len(work) - n_bad - n_nogroup), caveats=caveats)
+
+
+def data_quality_report(df: pd.DataFrame) -> ToolResult:
+    """Row count, duplicate rows, and missing values per column."""
+    missing = {c: int(n) for c, n in df.isna().sum().items() if n > 0}
+    caveats = []
+    if missing:
+        caveats.append('Missing values may limit conclusions drawn from those columns.')
+    return ToolResult(tool='data_quality_report',
+                      value={'rows': len(df), 'duplicate_rows': int(df.duplicated().sum()),
+                             'columns_with_missing': missing},
+                      definition='Counts of duplicate rows and missing values in the loaded table',
+                      scope={'filters': 'none (full table)'}, rows_used=len(df), caveats=caveats)
+
+
+# ------------------------------------------------------------ merge check
+def check_merge(left: pd.DataFrame, right: pd.DataFrame, on, value_col: str, how: str = 'left'):
+    """Merge, and report whether the join changed the row count or the revenue sum.
+    `value_col` must be a numeric column in `left`. Returns (merged, report)."""
+    before_rows = len(left)
+    before_sum = float(pd.to_numeric(left[value_col], errors='coerce').sum())
+    merged = left.merge(right, on=on, how=how)
+    after_rows = len(merged)
+    after_sum = float(pd.to_numeric(merged[value_col], errors='coerce').sum())
+    fan_out = after_rows > before_rows or abs(after_sum - before_sum) > 1e-9
+    report = {
+        'rows_before': before_rows, 'rows_after': after_rows,
+        'sum_before': before_sum, 'sum_after': after_sum,
+        'changed': fan_out,
+        'warning': ('The join changed the row count or the total. Check the grain and keys '
+                    'of both tables before using this result.') if fan_out else '',
+    }
+    return merged, report
+
+# E-Presso BI Analyst (starter)
+
+> Replace this README as you build. Your final version should cover every section below.
+
+## What this application does
+_One paragraph for a manager, not a programmer._
+
+## Live app
+_URL here. Note that the app may take a moment to wake up._
+
+## How to use it
+_Upload files, use filters, ask the assistant. Include the file names and sheets it expects._
+
+## Data model
+_Grain of each table, keys, and how they are joined. Include your merge checks._
+
+## Metric definitions
+_What "revenue" means here, and anything it does not mean._
+
+## Assistant
+_State exactly what you built (live language-model agent, or rules-based assistant). List each tool, what it calculates, and what the assistant is not allowed to do._
+
+## Validation
+_Link to or summarize your Power BI comparison, independent check, and $1,000 test._
+
+## Limitations
+_Revenue is not profit. What else can this app not tell a manager?_
+
+## Files
+| File | Purpose |
+|---|---|
+| `streamlit_app.py` | Screen layout and interaction |
+| `analytics.py` | Metrics and analytical functions (no Streamlit code) |
+| `agent.py` | Tool registry, dispatcher, and routers |
+| `tests/` | Tests with hand-checkable answers |
+| `requirements.txt` | Packages the hosted app needs |
+
+## Run it
+Hosted: deploy from this repository on share.streamlit.io with main file `streamlit_app.py`.
+
+Locally (optional): `pip install -r requirements-dev.txt`, then `streamlit run streamlit_app.py`. Run tests with `pytest`.
+
+## Secrets
+Never commit API keys. Use Streamlit Secrets (see `.streamlit/secrets.toml.example`).
+
+-r requirements.txt
+pytest>=8.0
+
+streamlit>=1.40
+pandas>=2.0
+plotly>=5.20
+openpyxl>=3.1
+
+"""Main app. Checkpoint 0: loads a file and shows a profile.
+Keep calculations in analytics.py and the assistant in agent.py."""
+import streamlit as st
+
+import agent
+import analytics
+
+MAX_QUESTIONS = 15  # per-session limit for the assistant
+
+st.set_page_config(page_title='E-Presso BI Analyst', layout='wide')
+st.title('E-Presso BI Analyst')
+st.caption('Starter app. Replace this line with a description of your own application.')
+
+
+@st.cache_data(show_spinner=False)
+def cached_load(file_bytes: bytes, filename: str, sheet_name):
+    # The cache is keyed on the file CONTENTS, so a modified file is never
+    # confused with the original one.
+    return analytics.load_table(file_bytes, filename, sheet_name)
+
+
+with st.sidebar:
+    st.header('Data')
+    uploaded = st.file_uploader('Upload a CSV or Excel file', type=['csv', 'txt', 'tsv', 'xlsx', 'xls'])
+    sheet = 0
+    if uploaded is not None and uploaded.name.lower().endswith(analytics.EXCEL_EXT):
+        sheet = st.selectbox('Sheet', analytics.excel_sheet_names(uploaded.getvalue()))
+
+if uploaded is None:
+    st.info('Upload a file in the sidebar to begin.')
+    st.stop()
+
+try:
+    df = cached_load(uploaded.getvalue(), uploaded.name, sheet)
+except Exception as exc:  # show a readable message instead of a traceback
+    st.error(f'Could not read that file: {exc}')
+    st.stop()
+
+tab_data, tab_dash, tab_assistant = st.tabs(['Data and profile', 'Dashboard', 'Assistant'])
+
+with tab_data:
+    profile = analytics.profile_table(df)
+    c1, c2, c3 = st.columns(3)
+    c1.metric('Rows', f"{profile['rows']:,}")
+    c2.metric('Columns', profile['columns'])
+    c3.metric('Duplicate rows', profile['duplicate_rows'])
+    st.subheader('Preview')
+    st.dataframe(df.head(50))
+    left, right = st.columns(2)
+    left.subheader('Missing values')
+    left.dataframe(profile['missing'])
+    right.subheader('Data types')
+    right.dataframe(profile['dtypes'])
+
+with tab_dash:
+    st.info('TODO: KPIs, filters, and at least three charts go here. '
+            'Calculate everything from the loaded data. Never hardcode results.')
+
+with tab_assistant:
+    st.caption('Mode: rules-based starter. Describe what you actually built here.')
+    st.session_state.setdefault('n_questions', 0)
+    st.session_state.setdefault('history', [])
+    for item in st.session_state['history']:
+        with st.chat_message('user'):
+            st.write(item['question'])
+        with st.chat_message('assistant'):
+            st.markdown(f"**Scope:** {item['answer']['scope']}")
+            st.markdown(f"**Findings:** {item['answer']['findings']}")
+            if item['answer']['interpretation']:
+                st.markdown(f"**Interpretation:** {item['answer']['interpretation']}")
+            with st.expander('Tool-call log'):
+                st.json(item['answer']['tool_log'])
+    question = st.chat_input('Ask a question about the loaded data')
+    if question:
+        if st.session_state['n_questions'] >= MAX_QUESTIONS:
+            st.warning('Question limit reached for this session. Reload the page to start over.')
+        else:
+            st.session_state['n_questions'] += 1
+            answer = agent.answer_question(question, df, mode='rules')
+            st.session_state['history'].append({'question': question, 'answer': answer})
+            st.rerun()
