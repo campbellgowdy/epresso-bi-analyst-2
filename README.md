@@ -38,29 +38,39 @@ _Revenue is not profit. What else can this app not tell a manager?_
 ## Run it
 Hosted: deploy from this repository on share.streamlit.io with main file `streamlit_app.py`.
 
-Data Sources and Grain Statements
-
-1. Sales Table
-
-Grain: Each row represents one sales record. The exact level of detail (such as an individual sale, a product within a sale, or sales aggregated by time period) must be confirmed using the table's columns and data.
-
-2. Products Table
-
-Grain: Each row represents one product in the E-Presso product catalog.
-
-3. Categories Table
-
-Grain: Each row represents one product category in the E-Presso product catalog.
-
-4. Stores Dataset
-
-Grain: Each row represents one store or sales location, subject to confirmation from the dataset's columns.
-
-5. Survey Dataset
-
-Grain: Each row represents one survey record. Whether each row represents an individual respondent or an aggregated survey result must be confirmed from the dataset's columns.
-
-Locally (optional): `pip install -r requirements-dev.txt`, then `streamlit run streamlit_app.py`. Run tests with `pytest`.
 
 ## Secrets
 Never commit API keys. Use Streamlit Secrets (see `.streamlit/secrets.toml.example`).
+
+
+## Grain Statements for E-Presso Data
+
+### 1. Sales Table
+
+**Grain:** Each row represents one sales record associated with a specific product, category, store, date, and store year.
+
+**Key fields:** `Sales ID` identifies the sales record. `Store ID`, `Category ID`, and `Product ID` identify the related store, category, and product.
+
+**Measures:** `Revenue` records the monetary value associated with each sales record.
+
+**Data quality checks:** Verify that `Sales ID` is unique and check for missing values in key fields, dates, and revenue.
+
+### 2. Products Table
+
+**Grain:** Each row represents one product in the E-Presso product catalog.
+
+**Key field:** `Product ID` identifies the product.
+
+**Attributes:** `Product` contains the product name.
+
+**Data quality checks:** Verify that `Product ID` is unique and check for missing product IDs or product names.
+
+### 3. Categories Table
+
+**Grain:** Each row represents one product category in the E-Presso product catalog.
+
+**Key field:** `Category ID` identifies the category.
+
+**Attributes:** `Category` contains the category name.
+
+**Data quality checks:** Verify that `Category ID` is unique and check for missing category IDs or category names.
