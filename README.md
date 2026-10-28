@@ -74,3 +74,20 @@ Never commit API keys. Use Streamlit Secrets (see `.streamlit/secrets.toml.examp
 **Attributes:** `Category` contains the category name.
 
 **Data quality checks:** Verify that `Category ID` is unique and check for missing category IDs or category names.
+
+4. Stores Dataset
+
+Grain: Each row represents one E-Presso store location.
+
+Key field: ID identifies the store.
+
+Attributes: The dataset includes City, State, Postal Code, Phone, Store Type, Market, Location, and Manager, which describe the store and its characteristics.
+
+Data quality checks: Verify that each ID is unique and check for missing store IDs, locations, and other important fields.
+### 5. Survey Dataset
+
+**Purpose:** To track market survey results for E-Presso stores on an annual basis.
+
+**Grain:** Each row represents a market survey record for E-Presso. The dataset includes `Market` and `Survey` fields. The exact level of detail represented by each row should be confirmed by inspecting the data.
+
+**Data quality checks:** Investigate the unnamed column to determine what it contains, and check for missing values and duplicate records.
