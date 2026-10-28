@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import io
 from dataclasses import asdict, dataclass, field
+import subprocess
+from pathlib import Path
 
 import pandas as pd
 
@@ -156,3 +158,47 @@ def check_merge(left: pd.DataFrame, right: pd.DataFrame, on, value_col: str, how
                     'of both tables before using this result.') if fan_out else '',
     }
     return merged, report
+
+
+def access_table_names(file_path: str) -> list[str]:
+    """Return the table names in an Access database."""
+    result = subprocess.run(
+        ["mdb-tables", "-1", file_path],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError(
+            result.stderr.strip() or "Could not read the Access database."
+        )
+
+    return [
+        name.strip()
+        for name in result.stdout.splitlines()
+        if name.strip()
+    ]
+
+
+def load_access_table(file_path: str, table_name: str) -> pd.DataFrame:
+    """Export one Access table to CSV in memory and load it into pandas."""
+    tables = access_table_names(file_path)
+
+    if table_name not in tables:
+        raise ValueError(f"Table not found in Access database: {table_name}")
+
+    result = subprocess.run(
+        ["mdb-export", file_path, table_name],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError(
+            result.stderr.strip() or f"Could not export table: {table_name}"
+        )
+
+    return pd.read_csv(io.StringIO(result.stdout))
+
