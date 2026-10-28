@@ -1,4 +1,25 @@
 # E-Presso BI Analyst (starter)
+Data Sources and Grain Statements
+
+1. Sales Table
+
+Grain: Each row represents one sales record. The exact level of detail (such as an individual sale, a product within a sale, or sales aggregated by time period) must be confirmed using the table's columns and data.
+
+2. Products Table
+
+Grain: Each row represents one product in the E-Presso product catalog.
+
+3. Categories Table
+
+Grain: Each row represents one product category in the E-Presso product catalog.
+
+4. Stores Dataset
+
+Grain: Each row represents one store or sales location, subject to confirmation from the dataset's columns.
+
+5. Survey Dataset
+
+Grain: Each row represents one survey record. Whether each row represents an individual respondent or an aggregated survey result must be confirmed from the dataset's columns.
 
 > Replace this README as you build. Your final version should cover every section below.
 
