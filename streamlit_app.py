@@ -134,7 +134,7 @@ if source == "Files in repository":
         try:
             relationship_tables = cached_all_access_tables(
                 str(access_path),
-                ("Sales", "Product", "Categories"),
+                ("Sales", "Products", "Categories"),
             )
             relationship_tables["Stores"] = cached_load(
                 stores_path.read_bytes(),
