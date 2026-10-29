@@ -256,6 +256,7 @@ with tab_dash:
 
 
 
+
     if "Revenue" in df.columns and "Category ID" in df.columns:
         st.subheader("Revenue by Category")
 
@@ -271,7 +272,7 @@ with tab_dash:
             category_revenue = (
                 sales_with_categories.groupby("Category", as_index=False)["Revenue"]
                 .sum()
-                .sort_values("Revenue", ascending=False)
+                .sort_values("Revenue", ascending=True)
             )
 
             st.bar_chart(
@@ -281,18 +282,8 @@ with tab_dash:
                 horizontal=True,
             )
         else:
-            st.warning(
-                "Category names are unavailable. Select a repository Sales table "
-                "to view revenue by category name."
-            )
+            st.warning("Category names are unavailable.")
 
-            
-
-        else:
-            st.warning(
-                "Category names are unavailable. Select a repository Sales table "
-                "to view revenue by category name."
-            )
 
 
 
