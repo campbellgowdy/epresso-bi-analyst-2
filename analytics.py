@@ -184,6 +184,44 @@ def check_unique_ids(df: pd.DataFrame, id_col: str) -> dict:
     }
 
 
+def check_foreign_keys(
+    source_df: pd.DataFrame,
+    source_col: str,
+    target_df: pd.DataFrame,
+    target_col: str,
+) -> dict:
+    """Check whether source IDs exist in the target table."""
+    if source_col not in source_df.columns:
+        return {
+            "source_column": source_col,
+            "target_column": target_col,
+            "unmatched_count": None,
+            "unmatched_values": [],
+            "error": "Source column not found.",
+        }
+
+    if target_col not in target_df.columns:
+        return {
+            "source_column": source_col,
+            "target_column": target_col,
+            "unmatched_count": None,
+            "unmatched_values": [],
+            "error": "Target column not found.",
+        }
+
+    source_ids = source_df[source_col].dropna()
+    target_ids = target_df[target_col].dropna()
+    unmatched = source_ids[~source_ids.isin(target_ids)]
+
+    return {
+        "source_column": source_col,
+        "target_column": target_col,
+        "unmatched_count": int(len(unmatched)),
+        "unmatched_values": unmatched.drop_duplicates().tolist()[:20],
+        "error": None,
+    }
+
+
 
 def access_table_names(file_path: str) -> list[str]:
     """Return the table names in an Access database."""
