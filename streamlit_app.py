@@ -273,10 +273,14 @@ with tab_dash:
                 .sort_values("Revenue", ascending=False)
             )
 
-            st.bar_chart(
-                category_revenue,
-                x="Category",
-                y="Revenue",
+
+st.bar_chart(
+    category_revenue,
+    x="Revenue",
+    y="Category",
+    horizontal=True,
+)
+
             )
         else:
             st.warning(
