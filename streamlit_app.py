@@ -295,8 +295,6 @@ with tab_dash:
             )
 
             st.plotly_chart(fig, use_container_width=True)
-
-            )
         else:
             st.warning("Category names are unavailable.")
 
