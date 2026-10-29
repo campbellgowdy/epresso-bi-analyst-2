@@ -275,11 +275,27 @@ with tab_dash:
                 .sort_values("Revenue", ascending=True)
             )
 
-            st.bar_chart(
+            
+            import plotly.express as px
+
+            fig = px.bar(
                 category_revenue,
                 x="Revenue",
                 y="Category",
-                horizontal=True,
+                orientation="h",
+                title="Revenue by Category",
+                text_auto=",.0f",
+            )
+
+            fig.update_layout(
+                yaxis_title="Category",
+                xaxis_title="Revenue ($)",
+                yaxis={"categoryorder": "total ascending"},
+                height=400,
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+
             )
         else:
             st.warning("Category names are unavailable.")
