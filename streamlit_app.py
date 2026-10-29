@@ -144,6 +144,36 @@ if source == "Files in repository":
             st.warning(f"Could not load all tables for relationship checks: {exc}")
 
 
+if relationship_tables:
+    st.subheader("Relationship validation")
+
+    relationships = [
+        ("Sales", "Product ID", "Product", "Product ID"),
+        ("Sales", "Category ID", "Categories", "Category ID"),
+        ("Sales", "Store ID", "Stores", "ID"),
+    ]
+
+    relationship_results = []
+
+    for source_name, source_col, target_name, target_col in relationships:
+        result = analytics.check_foreign_keys(
+            relationship_tables[source_name],
+            source_col,
+            relationship_tables[target_name],
+            target_col,
+        )
+
+        relationship_results.append({
+            "Source": f"{source_name}.{source_col}",
+            "Target": f"{target_name}.{target_col}",
+            "Unmatched rows": result["unmatched_count"],
+            "Unmatched values (up to 20)": str(result["unmatched_values"]),
+            "Error": result["error"],
+        })
+
+    st.dataframe(relationship_results, use_container_width=True)
+
+
 tab_data, tab_dash, tab_assistant = st.tabs(
     ["Data and profile", "Dashboard", "Assistant"]
 )
