@@ -253,6 +253,25 @@ with tab_dash:
 
 
 
+
+    if "Revenue" in df.columns and "Category ID" in df.columns:
+        st.subheader("Revenue by Category")
+
+        category_revenue = (
+            df.groupby("Category ID", as_index=False)["Revenue"]
+            .sum()
+            .sort_values("Revenue", ascending=False)
+        )
+
+        st.bar_chart(
+            category_revenue,
+            x="Category ID",
+            y="Revenue",
+        )
+
+
+
+
 with tab_assistant:
     st.caption("Mode: rules-based assistant using approved analytical functions.")
     st.session_state.setdefault("n_questions", 0)
