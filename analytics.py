@@ -160,6 +160,31 @@ def check_merge(left: pd.DataFrame, right: pd.DataFrame, on, value_col: str, how
     return merged, report
 
 
+def check_unique_ids(df: pd.DataFrame, id_col: str) -> dict:
+    """Check whether an ID column contains missing or duplicate values."""
+    if id_col not in df.columns:
+        return {
+            "column": id_col,
+            "exists": False,
+            "missing_count": None,
+            "duplicate_count": None,
+            "is_unique": False,
+        }
+
+    ids = df[id_col]
+    missing_count = int(ids.isna().sum())
+    duplicate_count = int(ids.dropna().duplicated().sum())
+
+    return {
+        "column": id_col,
+        "exists": True,
+        "missing_count": missing_count,
+        "duplicate_count": duplicate_count,
+        "is_unique": missing_count == 0 and duplicate_count == 0,
+    }
+
+
+
 def access_table_names(file_path: str) -> list[str]:
     """Return the table names in an Access database."""
     result = subprocess.run(
