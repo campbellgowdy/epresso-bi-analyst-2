@@ -135,6 +135,33 @@ with tab_data:
     with right:
         st.subheader("Data types")
         st.dataframe(profile["dtypes"], use_container_width=True)
+        
+    st.subheader("ID validation")
+
+    id_checks = {
+        "Sales ID": ("Sales", "Sales ID"),
+        "Product ID": ("Products", "Product ID"),
+        "Category ID": ("Categories", "Category ID"),
+        "Store ID": ("Stores", "ID"),
+    }
+
+    st.caption(
+        "These checks run on the currently selected dataset. "
+        "Only the ID column present in that dataset will be checked."
+    )
+
+    results = []
+    for label, (table_name, id_col) in id_checks.items():
+        if id_col in df.columns:
+            result = analytics.check_unique_ids(df, id_col)
+            result["table"] = table_name
+            results.append(result)
+
+    if results:
+        st.dataframe(results, use_container_width=True)
+    else:
+        st.info("No recognized ID column was found in this dataset.")
+
 
 with tab_dash:
     st.info(
