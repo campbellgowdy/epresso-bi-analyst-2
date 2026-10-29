@@ -299,6 +299,8 @@ with tab_dash:
             st.warning("Category names are unavailable.")
 
 
+
+    
     if "Revenue" in df.columns and "Date" in df.columns:
         st.subheader("Revenue Over Time")
 
