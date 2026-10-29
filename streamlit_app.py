@@ -240,11 +240,18 @@ with tab_data:
         st.info("No recognized ID column was found in this dataset.")
 
 
+
 with tab_dash:
-    st.info(
-        "The dashboard is not built yet. We will add business metrics, "
-        "filters, and charts after confirming the data loads correctly."
-    )
+    st.subheader("E-Presso Business Dashboard")
+
+    if "Revenue" in df.columns:
+        total_revenue = analytics.get_total(df, "Revenue")
+        st.metric("Total Revenue", f"${total_revenue:,.2f}")
+    else:
+        st.warning(
+            "Select the Sales table to view revenue metrics."
+        )
+
 
 with tab_assistant:
     st.caption("Mode: rules-based assistant using approved analytical functions.")
