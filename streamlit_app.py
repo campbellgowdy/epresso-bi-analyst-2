@@ -288,7 +288,6 @@ with tab_dash:
 
             
 
-            )
         else:
             st.warning(
                 "Category names are unavailable. Select a repository Sales table "
