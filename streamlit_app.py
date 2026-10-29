@@ -184,7 +184,10 @@ if relationship_tables:
         })
 
 
+if relationship_results:
     st.dataframe(relationship_results, use_container_width=True)
+else:
+    st.warning("No relationship results were generated. Check the table names above.")
 
 
 tab_data, tab_dash, tab_assistant = st.tabs(
