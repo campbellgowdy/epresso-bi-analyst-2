@@ -21,6 +21,15 @@ def cached_load(file_bytes: bytes, filename: str, sheet_name=0):
 
 
 @st.cache_data(show_spinner=False)
+def cached_all_access_tables(file_path: str, table_names: tuple):
+    return {
+        name: analytics.load_access_table(file_path, name)
+        for name in table_names
+    }
+
+
+
+@st.cache_data(show_spinner=False)
 def cached_access_tables(file_path: str, table_name: str):
     return analytics.load_access_table(file_path, table_name)
 
