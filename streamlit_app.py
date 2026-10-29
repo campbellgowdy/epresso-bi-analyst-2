@@ -241,17 +241,16 @@ with tab_data:
 
 
 
+
 with tab_dash:
     st.subheader("E-Presso Business Dashboard")
 
     if "Revenue" in df.columns:
         result = analytics.get_total(df, "Revenue")
-total_revenue = result.value
-st.metric("Total Revenue", f"${float(total_revenue):,.2f}")
+        st.write(result)
     else:
-        st.warning(
-            "Select the Sales table to view revenue metrics."
-        )
+        st.warning("Select the Sales table to view revenue metrics.")
+
 
 
 with tab_assistant:
