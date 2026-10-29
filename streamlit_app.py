@@ -247,7 +247,7 @@ with tab_dash:
 
     if "Revenue" in df.columns:
         result = analytics.get_total(df, "Revenue")
-        st.write(result)
+        st.metric("Total Revenue", f"${result.value:,.2f}")
     else:
         st.warning("Select the Sales table to view revenue metrics.")
 
