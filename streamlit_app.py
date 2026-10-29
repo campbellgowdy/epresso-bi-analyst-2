@@ -148,7 +148,7 @@ if relationship_tables:
     st.subheader("Relationship validation")
 
     relationships = [
-        ("Sales", "Product ID", "Product", "Product ID"),
+        ("Sales", "Product ID", "Products", "Product ID"),
         ("Sales", "Category ID", "Categories", "Category ID"),
         ("Sales", "Store ID", "Stores", "ID"),
     ]
