@@ -299,6 +299,41 @@ with tab_dash:
             st.warning("Category names are unavailable.")
 
 
+    if "Revenue" in df.columns and "Date" in df.columns:
+        st.subheader("Revenue Over Time")
+
+        import pandas as pd
+        import plotly.express as px
+
+        sales_over_time = df.copy()
+        sales_over_time["Date"] = pd.to_datetime(
+            sales_over_time["Date"], errors="coerce"
+        )
+        sales_over_time = sales_over_time.dropna(subset=["Date"])
+        sales_over_time["Month"] = (
+            sales_over_time["Date"].dt.to_period("M").astype(str)
+        )
+
+        monthly_revenue = (
+            sales_over_time.groupby("Month", as_index=False)["Revenue"]
+            .sum()
+            .sort_values("Month")
+        )
+
+        fig = px.line(
+            monthly_revenue,
+            x="Month",
+            y="Revenue",
+            title="Monthly Revenue",
+            markers=True,
+        )
+        fig.update_layout(
+            xaxis_title="Month",
+            yaxis_title="Revenue ($)",
+            height=400,
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
 
 
 
