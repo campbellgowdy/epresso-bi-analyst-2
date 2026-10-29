@@ -122,6 +122,28 @@ with st.sidebar:
             st.error(f"Could not load that file: {exc}")
             st.stop()
 
+
+# Load supporting tables for relationship checks when using repository files.
+relationship_tables = {}
+
+if source == "Files in repository":
+    access_path = DATA_DIR / "Support_EX_B_Sales (1).accdb"
+    stores_path = DATA_DIR / "Support_EX_B_Stores (3).csv"
+
+    if access_path.exists() and stores_path.exists():
+        try:
+            relationship_tables = cached_all_access_tables(
+                str(access_path),
+                ("Sales", "Product", "Categories"),
+            )
+            relationship_tables["Stores"] = cached_load(
+                stores_path.read_bytes(),
+                stores_path.name,
+            )
+        except Exception as exc:
+            st.warning(f"Could not load all tables for relationship checks: {exc}")
+
+
 tab_data, tab_dash, tab_assistant = st.tabs(
     ["Data and profile", "Dashboard", "Assistant"]
 )
