@@ -255,6 +255,7 @@ with tab_dash:
 
 
 
+
     if "Revenue" in df.columns and "Category ID" in df.columns:
         st.subheader("Revenue by Category")
 
@@ -273,13 +274,19 @@ with tab_dash:
                 .sort_values("Revenue", ascending=False)
             )
 
+            st.bar_chart(
+                category_revenue,
+                x="Revenue",
+                y="Category",
+                horizontal=True,
+            )
+        else:
+            st.warning(
+                "Category names are unavailable. Select a repository Sales table "
+                "to view revenue by category name."
+            )
 
-st.bar_chart(
-    category_revenue,
-    x="Revenue",
-    y="Category",
-    horizontal=True,
-)
+            
 
             )
         else:
