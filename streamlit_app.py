@@ -153,9 +153,21 @@ if relationship_tables:
         ("Sales", "Store ID", "Stores", "ID"),
     ]
 
+
     relationship_results = []
 
     for source_name, source_col, target_name, target_col in relationships:
+        if source_name not in relationship_tables:
+            st.warning(f"Missing source table: {source_name}")
+            continue
+
+        if target_name not in relationship_tables:
+            st.warning(
+                f"Missing target table: {target_name}. "
+                f"Tables loaded: {list(relationship_tables.keys())}"
+            )
+            continue
+
         result = analytics.check_foreign_keys(
             relationship_tables[source_name],
             source_col,
@@ -170,6 +182,7 @@ if relationship_tables:
             "Unmatched values (up to 20)": str(result["unmatched_values"]),
             "Error": result["error"],
         })
+
 
     st.dataframe(relationship_results, use_container_width=True)
 
