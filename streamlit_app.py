@@ -254,20 +254,36 @@ with tab_dash:
 
 
 
+
     if "Revenue" in df.columns and "Category ID" in df.columns:
         st.subheader("Revenue by Category")
 
-        category_revenue = (
-            df.groupby("Category ID", as_index=False)["Revenue"]
-            .sum()
-            .sort_values("Revenue", ascending=False)
-        )
+        if relationship_tables and "Categories" in relationship_tables:
+            categories_df = relationship_tables["Categories"]
 
-        st.bar_chart(
-            category_revenue,
-            x="Category ID",
-            y="Revenue",
-        )
+            sales_with_categories = df.merge(
+                categories_df[["Category ID", "Category"]],
+                on="Category ID",
+                how="left",
+            )
+
+            category_revenue = (
+                sales_with_categories.groupby("Category", as_index=False)["Revenue"]
+                .sum()
+                .sort_values("Revenue", ascending=False)
+            )
+
+            st.bar_chart(
+                category_revenue,
+                x="Category",
+                y="Revenue",
+            )
+        else:
+            st.warning(
+                "Category names are unavailable. Select a repository Sales table "
+                "to view revenue by category name."
+            )
+
 
 
 
