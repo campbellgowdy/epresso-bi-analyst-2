@@ -316,11 +316,43 @@ with tab_dash:
             sales_over_time["Date"].dt.to_period("M").astype(str)
         )
 
+
         monthly_revenue = (
             sales_over_time.groupby("Month", as_index=False)["Revenue"]
             .sum()
             .sort_values("Month")
         )
+
+        monthly_revenue["Month Date"] = pd.to_datetime(
+            monthly_revenue["Month"], format="%Y-%m"
+        )
+        monthly_revenue["Month Label"] = monthly_revenue[
+            "Month Date"
+        ].dt.strftime("%b %Y")
+
+        fig = px.line(
+            monthly_revenue,
+            x="Month Date",
+            y="Revenue",
+            title="Monthly Revenue",
+            markers=True,
+            hover_data={"Month Label": True, "Month Date": False},
+        )
+
+        fig.update_layout(
+            xaxis_title="Month",
+            yaxis_title="Revenue ($)",
+            xaxis=dict(
+                tickformat="%b %Y",
+                dtick="M1",
+                tickangle=-45,
+            ),
+            yaxis=dict(tickprefix="$", separatethousands=True),
+            height=450,
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
 
         fig = px.line(
             monthly_revenue,
