@@ -262,6 +262,7 @@ with tab_dash:
         and "Store ID" in dashboard_df.columns
     ):
         stores_df = relationship_tables["Stores"]
+        st.write("Store types in data:", stores_df["StoreType"].unique().tolist())
 
         matching_store_ids = stores_df.loc[
             stores_df["StoreType"] == store_type_filter,
