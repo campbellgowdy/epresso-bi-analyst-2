@@ -253,6 +253,24 @@ with tab_dash:
         options=["All Store Types", "Website", "Brick/Mortar"],
     )
 
+    dashboard_df = df.copy()
+
+    if (
+        store_type_filter != "All Store Types"
+        and relationship_tables
+        and "Stores" in relationship_tables
+        and "Store ID" in dashboard_df.columns
+    ):
+        stores_df = relationship_tables["Stores"]
+
+        matching_store_ids = stores_df.loc[
+            stores_df["StoreType"] == store_type_filter,
+            "ID",
+        ]
+
+        dashboard_df = dashboard_df[
+            dashboard_df["Store ID"].isin(matching_store_ids)
+        ]
 
     if "Revenue" in df.columns:
         result = analytics.get_total(df, "Revenue")
