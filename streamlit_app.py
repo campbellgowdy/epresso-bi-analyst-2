@@ -252,12 +252,12 @@ with tab_dash:
             text-align: center;
             background-color: #FAF8F4;
             background-image:
-            linear-gradient(rgba(181, 158, 130, 0.12) 50%, transparent 50%),
-            linear-gradient(90deg, rgba(181, 158, 130, 0.12) 50%, transparent 50%);
+                linear-gradient(rgba(181, 158, 130, 0.12) 50%, transparent 50%),
+                linear-gradient(90deg, rgba(181, 158, 130, 0.12) 50%, transparent 50%);
             background-size: 28px 28px;
             padding: 30px 15px 25px 15px;
             border-radius: 14px;
-            border: 1px solid #D9E8F2;
+            border: 1px solid #E8DED0;
             margin-bottom: 25px;
         }
 
@@ -267,13 +267,13 @@ with tab_dash:
             font-weight: 800;
             color: #8B684B;
             margin-bottom: 8px;
-}
         }
 
         .dashboard-header p {
             font-family: 'DM Sans', sans-serif;
             font-size: 16px;
-            color: #6C8DA5;
+            font-weight: 500;
+            color: #765F4B;
             margin-top: 0;
         }
         </style>
