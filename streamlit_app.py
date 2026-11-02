@@ -275,6 +275,29 @@ with tab_dash:
             font-weight: 500;
             color: #765F4B;
             margin-top: 0;
+                    .dashboard-header {
+            /* Your existing header styling */
+            margin-bottom: 25px;
+        }
+
+        /* E-Presso KPI Cards */
+
+        div[data-testid="stMetric"] {
+            background-color: #FAF8F4;
+            border: 1px solid #E8DED0;
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        div[data-testid="stMetricLabel"] {
+            color: #765F4B;
+            font-weight: 600;
+        }
+
+        div[data-testid="stMetricValue"] {
+            color: #8B684B;
+            font-weight: 800;
+        }
         }
         </style>
 
