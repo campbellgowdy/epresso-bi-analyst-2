@@ -302,7 +302,19 @@ with tab_dash:
                 .sum()
                 .sort_values("Revenue", ascending=True)
             )
-    st.write(category_revenue)
+
+            st.write(category_revenue)
+
+            import plotly.express as px
+
+            fig = px.bar(
+                category_revenue,
+                x="Revenue",
+                y="Category",
+                orientation="h",
+                title="Revenue by Category",
+                text_auto=",.0f",
+            )
 
             
             import plotly.express as px
