@@ -243,13 +243,16 @@ with tab_data:
 
 
 with tab_dash:
-st.markdown("### 🔎 Dashboard Filters")
-st.caption("Use the filter below to customize the dashboard results.")
+    st.subheader("E-Presso Business Dashboard")
 
-store_type_filter = st.selectbox(
-    "🏪 Store Type",
-    options=["All Store Types", "Website", "Brick/Mortar"],
-)
+    st.markdown("### 🔎 Dashboard Filters")
+    st.caption("Use the filter below to customize the dashboard results.")
+
+    store_type_filter = st.selectbox(
+        "🏪 Store Type",
+        options=["All Store Types", "Website", "Brick/Mortar"],
+    )
+
 
     if "Revenue" in df.columns:
         result = analytics.get_total(df, "Revenue")
