@@ -417,9 +417,9 @@ else:
         textfont_color="#FFFFFF",
 )
 
-st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True)
         else:
-            st.warning("Category names are unavailable.")
+        st.warning("Category names are unavailable.")
 
 
 
