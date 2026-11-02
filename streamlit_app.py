@@ -262,7 +262,6 @@ with tab_dash:
         and "Store ID" in dashboard_df.columns
     ):
         stores_df = relationship_tables["Stores"]
-        st.write("Store types in data:", stores_df["StoreType"].unique().tolist())
 
         matching_store_ids = stores_df.loc[
             stores_df["StoreType"] == store_type_filter,
@@ -304,17 +303,6 @@ with tab_dash:
             )
 
 
-            import plotly.express as px
-
-            fig = px.bar(
-                category_revenue,
-                x="Revenue",
-                y="Category",
-                orientation="h",
-                title="Revenue by Category",
-                text_auto=",.0f",
-            )
-
             
             import plotly.express as px
 
@@ -348,7 +336,7 @@ with tab_dash:
         import pandas as pd
         import plotly.express as px
 
-        sales_over_time = df.copy()
+        sales_over_time = dashboard_df.copy()
         sales_over_time["Date"] = pd.to_datetime(
             sales_over_time["Date"], errors="coerce"
         )
@@ -403,7 +391,7 @@ with tab_dash:
 
         stores_df = relationship_tables["Stores"]
 
-        sales_with_stores = df.merge(
+        sales_with_stores = dashboard_df.merge(
             stores_df[["ID", "StoreType"]],
             left_on="Store ID",
             right_on="ID",
