@@ -245,7 +245,7 @@ with tab_data:
 with tab_dash:
     st.markdown(
         """
-                <style>
+        <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
 
         .dashboard-header {
@@ -272,18 +272,14 @@ with tab_dash:
             margin-top: 0;
         }
         </style>
+
+        <div class="dashboard-header">
+            <h1>E-Presso | Business Performance</h1>
+            <p>Sales performance, store comparisons, and business insights</p>
+        </div>
         """,
         unsafe_allow_html=True,
     )
-
-    st.markdown("### 🔎 Dashboard Filters")
-    st.caption("Use the filter below to customize the dashboard results.")
-
-    store_type_filter = st.selectbox(
-        "🏪 Store Type",
-        options=["All Store Types", "Website", "Brick & Mortar"],
-    )
-        
 
     st.markdown("### 🔎 Dashboard Filters")
     st.caption("Use the filter below to customize the dashboard results.")
