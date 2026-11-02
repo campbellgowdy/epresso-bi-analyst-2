@@ -243,7 +243,30 @@ with tab_data:
 
 
 with tab_dash:
-    st.subheader("E-Presso Business Dashboard")
+    st.markdown(
+    """
+    <div style="
+        background: linear-gradient(
+            rgba(35, 22, 15, 0.45),
+            rgba(35, 22, 15, 0.65)
+        ),
+        url('https://images.unsplash.com/photo-1442512595331-e89e73853f31');
+        background-size: cover;
+        background-position: center;
+        padding: 65px 35px;
+        border-radius: 14px;
+        margin-bottom: 25px;
+    ">
+        <h1 style="color: white; font-size: 38px; margin-bottom: 8px;">
+            E-Presso Business Dashboard
+        </h1>
+        <p style="color: #f5e6d3; font-size: 17px;">
+            Brewing insights from sales and store performance
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
     st.markdown("### 🔎 Dashboard Filters")
     st.caption("Use the filter below to customize the dashboard results.")
