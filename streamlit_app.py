@@ -243,7 +243,7 @@ with tab_data:
 
 
 with tab_dash:
-        st.markdown(
+    st.markdown(
         """
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
@@ -276,6 +276,15 @@ with tab_dash:
         """,
         unsafe_allow_html=True,
     )
+
+    st.markdown("### 🔎 Dashboard Filters")
+    st.caption("Use the filter below to customize the dashboard results.")
+
+    store_type_filter = st.selectbox(
+        "🏪 Store Type",
+        options=["All Store Types", "Website", "Brick & Mortar"],
+    )
+        
 
     st.markdown("### 🔎 Dashboard Filters")
     st.caption("Use the filter below to customize the dashboard results.")
