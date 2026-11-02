@@ -357,8 +357,8 @@ if "Revenue" in dashboard_df.columns:
     with col3:
         st.metric("Average Revenue per Transaction", f"${average_revenue:,.2f}")
 
-else:
-    st.warning("Select the Sales table to view revenue metrics.")
+    else:
+        st.warning("Select the Sales table to view revenue metrics.")
 
 
 
