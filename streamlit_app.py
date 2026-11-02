@@ -243,41 +243,11 @@ with tab_data:
 
 
 with tab_dash:
-        st.markdown(
+    st.markdown(
         """
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
-
-        .dashboard-header {
-            text-align: center;
-            background-color: #EFF5F9;
-            padding: 30px 15px 25px 15px;
-            border-radius: 14px;
-            border: 1px solid #D9E8F2;
-            margin-bottom: 25px;
-        }
-
-        .dashboard-header h1 {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 36px;
-            font-weight: 800;
-            color: #344F68;
-            margin-bottom: 8px;
-        }
-
-        .dashboard-header p {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 16px;
-            color: #6C8DA5;
-            margin-top: 0;
-        }
-
+        /* Your dashboard CSS goes here */
         </style>
-
-        <div class="dashboard-header">
-            <h1>E-Presso | Business Performance</h1>
-            <p>Sales performance, store comparisons, and business insights</p>
-        </div>
         """,
         unsafe_allow_html=True,
     )
