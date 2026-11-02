@@ -343,10 +343,10 @@ with tab_dash:
             xaxis_title="Month",
             yaxis_title="Revenue ($)",
             xaxis=dict(
-                tickformat="%b %Y",
-                dtick="M1",
-                tickangle=-45,
-            ),
+                tickformat="%Y",
+                dtick="M12",
+                tickangle=0,
+),
             yaxis=dict(tickprefix="$", separatethousands=True),
             height=450,
         )
