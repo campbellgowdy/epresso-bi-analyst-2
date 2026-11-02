@@ -243,30 +243,39 @@ with tab_data:
 
 
 with tab_dash:
-    st.markdown(
-    """
-    <div style="
-        background: linear-gradient(
-            rgba(35, 22, 15, 0.45),
-            rgba(35, 22, 15, 0.65)
-        ),
-        url('https://images.unsplash.com/photo-1442512595331-e89e73853f31');
-        background-size: cover;
-        background-position: center;
-        padding: 65px 35px;
-        border-radius: 14px;
-        margin-bottom: 25px;
-    ">
-        <h1 style="color: white; font-size: 38px; margin-bottom: 8px;">
-            E-Presso Business Dashboard
-        </h1>
-        <p style="color: #f5e6d3; font-size: 17px;">
-            Brewing insights from sales and store performance
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+        st.markdown(
+        """
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+        .dashboard-header {
+            text-align: center;
+            padding: 25px 10px 20px 10px;
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 38px;
+            font-weight: 800;
+            color: #49352A;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-header p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            color: #887568;
+            margin-top: 0;
+        }
+        </style>
+
+        <div class="dashboard-header">
+            <h1>E-Presso | Business Performance</h1>
+            <p>Sales performance, store comparisons, and business insights</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     st.markdown("### 🔎 Dashboard Filters")
     st.caption("Use the filter below to customize the dashboard results.")
