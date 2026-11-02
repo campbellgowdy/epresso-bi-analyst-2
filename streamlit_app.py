@@ -354,21 +354,6 @@ with tab_dash:
         st.plotly_chart(fig, use_container_width=True)
 
 
-        fig = px.line(
-            monthly_revenue,
-            x="Month",
-            y="Revenue",
-            title="Monthly Revenue",
-            markers=True,
-        )
-        fig.update_layout(
-            xaxis_title="Month",
-            yaxis_title="Revenue ($)",
-            height=400,
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
-
 
 
 
