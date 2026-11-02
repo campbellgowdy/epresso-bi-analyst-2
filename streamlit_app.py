@@ -263,10 +263,11 @@ with tab_dash:
 
         .dashboard-header h1 {
             font-family: 'DM Sans', sans-serif;
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 800;
-            color: #344F68;
+            color: #8B684B;
             margin-bottom: 8px;
+}
         }
 
         .dashboard-header p {
