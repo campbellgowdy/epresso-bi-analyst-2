@@ -250,10 +250,10 @@ with tab_dash:
 
         .dashboard-header {
             text-align: center;
-            background-color: #EFF5F9;
+            background-color: #FAF8F4;
             background-image:
-                linear-gradient(rgba(108, 157, 187, 0.10) 50%, transparent 50%),
-                linear-gradient(90deg, rgba(108, 157, 187, 0.10) 50%, transparent 50%);
+            linear-gradient(rgba(181, 158, 130, 0.12) 50%, transparent 50%),
+            linear-gradient(90deg, rgba(181, 158, 130, 0.12) 50%, transparent 50%);
             background-size: 28px 28px;
             padding: 30px 15px 25px 15px;
             border-radius: 14px;
