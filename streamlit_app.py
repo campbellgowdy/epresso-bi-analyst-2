@@ -387,10 +387,22 @@ with tab_dash:
                     category_revenue["Revenue"].idxmax()
                 ]
 
-                st.info(
-                    f"🏆 Top revenue-generating category: "
-                    f"**{top_category['Category']}** "
-                    f"(${top_category['Revenue']:,.2f} in revenue)"
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color: #FAF8F4;
+                        border-left: 5px solid #8B684B;
+                        border-radius: 10px;
+                        padding: 15px 20px;
+                        color: #765F4B;
+                        margin: 10px 0;
+                    ">
+                        <strong>🏆 Top revenue-generating category:</strong>
+                        {top_category['Category']}
+                        (${top_category['Revenue']:,.2f} in revenue)
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
                 )
             
 
