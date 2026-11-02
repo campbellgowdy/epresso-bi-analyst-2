@@ -318,6 +318,7 @@ with tab_dash:
                 yaxis_title="Category",
                 xaxis_title="Revenue ($)",
                 yaxis={"categoryorder": "total ascending"},
+                xaxis={"autorange": True},
                 height=400,
             )
 
