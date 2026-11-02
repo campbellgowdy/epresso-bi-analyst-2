@@ -352,6 +352,45 @@ with tab_dash:
         )
 
         st.plotly_chart(fig, use_container_width=True)
+    if (
+        "Revenue" in df.columns
+        and "Store ID" in df.columns
+        and relationship_tables
+        and "Stores" in relationship_tables
+    ):
+        st.subheader("Revenue by Store Type")
+
+        stores_df = relationship_tables["Stores"]
+
+        sales_with_stores = df.merge(
+            stores_df[["ID", "StoreType"]],
+            left_on="Store ID",
+            right_on="ID",
+            how="left",
+        )
+
+        store_type_revenue = (
+            sales_with_stores.groupby("StoreType", as_index=False)["Revenue"]
+            .sum()
+            .sort_values("Revenue", ascending=True)
+        )
+
+        fig = px.bar(
+            store_type_revenue,
+            x="Revenue",
+            y="StoreType",
+            orientation="h",
+            title="Revenue by Store Type",
+            text_auto=",.0f",
+        )
+
+        fig.update_layout(
+            xaxis_title="Revenue ($)",
+            yaxis_title="Store Type",
+            height=400,
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
 
 
 
