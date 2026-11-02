@@ -414,6 +414,9 @@ with tab_dash:
         else:
             st.warning("Category names are unavailable.")
 
+        st.markdown("---")
+        st.subheader("💡 Business Insights")
+
     # Revenue Over Time
     if "Revenue" in dashboard_df.columns and "Date" in dashboard_df.columns:
         st.subheader("Revenue Over Time")
