@@ -379,6 +379,16 @@ with tab_dash:
             category_revenue = (
                 sales_with_categories.groupby("Category", as_index=False)["Revenue"]
                 .sum()
+            if not category_revenue.empty:
+                top_category = category_revenue.loc[
+                category_revenue["Revenue"].idxmax()
+                ]
+
+                st.info(
+                    f"🏆 Top revenue-generating category: "
+                    f"**{top_category['Category']}** "
+                    f"(${top_category['Revenue']:,.2f} in revenue)"
+                )
             )
 
             fig = px.bar(
