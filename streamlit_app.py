@@ -290,7 +290,7 @@ with tab_dash:
         if relationship_tables and "Categories" in relationship_tables:
             categories_df = relationship_tables["Categories"]
 
-            sales_with_categories = df.merge(
+            sales_with_categories = dashboard_df.merge(
                 categories_df[["Category ID", "Category"]],
                 on="Category ID",
                 how="left",
