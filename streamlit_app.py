@@ -369,7 +369,7 @@ with tab_dash:
 
         if relationship_tables and "Categories" in relationship_tables:
             categories_df = relationship_tables["Categories"]
-
+            
             sales_with_categories = dashboard_df.merge(
                 categories_df,
                 on="Category ID",
@@ -377,11 +377,14 @@ with tab_dash:
             )
 
             category_revenue = (
-                sales_with_categories.groupby("Category", as_index=False)["Revenue"]
+                sales_with_categories
+                .groupby("Category", as_index=False)["Revenue"]
                 .sum()
+            )
+
             if not category_revenue.empty:
                 top_category = category_revenue.loc[
-                category_revenue["Revenue"].idxmax()
+                    category_revenue["Revenue"].idxmax()
                 ]
 
                 st.info(
