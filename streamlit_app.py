@@ -242,7 +242,10 @@ with tab_data:
 
 
 
+
 with tab_dash:
+
+    # Dashboard styling
     st.markdown(
         """
         <style>
@@ -275,12 +278,7 @@ with tab_dash:
             font-weight: 500;
             color: #765F4B;
             margin-top: 0;
-                    .dashboard-header {
-            /* Your existing header styling */
-            margin-bottom: 25px;
         }
-
-        /* E-Presso KPI Cards */
 
         div[data-testid="stMetric"] {
             background-color: #FAF8F4;
@@ -298,7 +296,6 @@ with tab_dash:
             color: #8B684B;
             font-weight: 800;
         }
-        }
         </style>
 
         <div class="dashboard-header">
@@ -309,6 +306,7 @@ with tab_dash:
         unsafe_allow_html=True,
     )
 
+    # Dashboard filter
     st.markdown("### 🔎 Dashboard Filters")
     st.caption("Use the filter below to customize the dashboard results.")
 
@@ -336,44 +334,42 @@ with tab_dash:
             dashboard_df["Store ID"].isin(matching_store_ids)
         ]
 
-if "Revenue" in dashboard_df.columns:
-    total_revenue = dashboard_df["Revenue"].sum()
-    transaction_count = dashboard_df["Sales ID"].nunique()
+    # KPI metrics
+    if "Revenue" in dashboard_df.columns:
+        total_revenue = dashboard_df["Revenue"].sum()
+        transaction_count = dashboard_df["Sales ID"].nunique()
 
-    average_revenue = (
-        total_revenue / transaction_count
-        if transaction_count > 0
-        else 0
-    )
+        average_revenue = (
+            total_revenue / transaction_count
+            if transaction_count > 0
+            else 0
+        )
 
-    col1, col2, col3 = st.columns(3)
+        col1, col2, col3 = st.columns(3)
 
-    with col1:
-        st.metric("Total Revenue", f"${total_revenue:,.2f}")
+        with col1:
+            st.metric("Total Revenue", f"${total_revenue:,.2f}")
 
-    with col2:
-        st.metric("Sales Transactions", f"{transaction_count:,}")
+        with col2:
+            st.metric("Sales Transactions", f"{transaction_count:,}")
 
-    with col3:
-        st.metric("Average Revenue per Transaction", f"${average_revenue:,.2f}")
-
+        with col3:
+            st.metric(
+                "Average Revenue per Transaction",
+                f"${average_revenue:,.2f}",
+            )
     else:
         st.warning("Select the Sales table to view revenue metrics.")
 
-
-
-
-
-
-
-    if "Revenue" in df.columns and "Category ID" in df.columns:
+    # Revenue by Category
+    if "Revenue" in dashboard_df.columns and "Category ID" in dashboard_df.columns:
         st.subheader("Revenue by Category")
 
         if relationship_tables and "Categories" in relationship_tables:
             categories_df = relationship_tables["Categories"]
 
             sales_with_categories = dashboard_df.merge(
-                categories_df[["Category ID", "Category"]],
+                categories_df,
                 on="Category ID",
                 how="left",
             )
@@ -381,45 +377,127 @@ if "Revenue" in dashboard_df.columns:
             category_revenue = (
                 sales_with_categories.groupby("Category", as_index=False)["Revenue"]
                 .sum()
-                .sort_values("Revenue", ascending=True)
             )
 
+            fig = px.bar(
+                category_revenue,
+                x="Revenue",
+                y="Category",
+                orientation="h",
+                title="Revenue by Category",
+                text_auto=",.0f",
+                color_discrete_sequence=["#8B684B"],
+            )
 
-            
-            import plotly.express as px
+            fig.update_layout(
+                yaxis_title="Category",
+                xaxis_title="Revenue ($)",
+                yaxis={"categoryorder": "total ascending"},
+                xaxis={"autorange": True},
+                height=400,
+                title_font_color="#765F4B",
+                title_font_size=20,
+                font={"family": "DM Sans", "color": "#765F4B"},
+                plot_bgcolor="#FFFFFF",
+                paper_bgcolor="#FFFFFF",
+            )
 
-    fig = px.bar(
-        category_revenue,
-        x="Revenue",
-        y="Category",
-        orientation="h",
-        title="Revenue by Category",
-        text_auto=",.0f",
-        color_discrete_sequence=["#8B684B"],
-)
+            fig.update_traces(
+                marker_line_color="#B59E82",
+                marker_line_width=1,
+                textfont_color="#FFFFFF",
+            )
 
-    fig.update_layout(
-        yaxis_title="Category",
-        xaxis_title="Revenue ($)",
-        yaxis={"categoryorder": "total ascending"},
-        xaxis={"autorange": True},
-        height=400,
-        title_font_color="#765F4B",
-        title_font_size=20,
-        font={"family": "DM Sans", "color": "#765F4B"},
-        plot_bgcolor="#FFFFFF",
-        paper_bgcolor="#FFFFFF",
-)
-
-    fig.update_traces(
-        marker_line_color="#B59E82",
-        marker_line_width=1,
-        textfont_color="#FFFFFF",
-)
-
-    st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True)
         else:
-        st.warning("Category names are unavailable.")
+            st.warning("Category names are unavailable.")
+
+    # Revenue Over Time
+    if "Revenue" in dashboard_df.columns and "Date" in dashboard_df.columns:
+        st.subheader("Revenue Over Time")
+
+        sales_over_time = dashboard_df.copy()
+        sales_over_time["Date"] = pd.to_datetime(
+            sales_over_time["Date"],
+            errors="coerce",
+        )
+        sales_over_time = sales_over_time.dropna(subset=["Date"])
+
+        monthly_revenue = (
+            sales_over_time
+            .set_index("Date")
+            .resample("ME")["Revenue"]
+            .sum()
+            .reset_index()
+        )
+
+        fig = px.line(
+            monthly_revenue,
+            x="Date",
+            y="Revenue",
+            title="Monthly Revenue Over Time",
+            markers=True,
+        )
+
+        fig.update_traces(
+            line_color="#8B684B",
+            marker_color="#6C9DBB",
+        )
+
+        fig.update_layout(
+            xaxis_title="Month",
+            yaxis_title="Revenue ($)",
+            height=400,
+            title_font_color="#765F4B",
+            title_font_size=20,
+            font={"family": "DM Sans", "color": "#765F4B"},
+            plot_bgcolor="#FFFFFF",
+            paper_bgcolor="#FFFFFF",
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    # Revenue by Store Type
+    if "Revenue" in dashboard_df.columns and "Store ID" in dashboard_df.columns:
+        if relationship_tables and "Stores" in relationship_tables:
+            st.subheader("Revenue by Store Type")
+
+            sales_with_stores = dashboard_df.merge(
+                relationship_tables["Stores"],
+                left_on="Store ID",
+                right_on="ID",
+                how="left",
+            )
+
+            store_type_revenue = (
+                sales_with_stores
+                .groupby("StoreType", as_index=False)["Revenue"]
+                .sum()
+            )
+
+            fig = px.bar(
+                store_type_revenue,
+                x="Revenue",
+                y="StoreType",
+                orientation="h",
+                title="Revenue by Store Type",
+                text_auto=",.0f",
+                color_discrete_sequence=["#B59E82"],
+            )
+
+            fig.update_layout(
+                xaxis_title="Revenue ($)",
+                yaxis_title="Store Type",
+                height=400,
+                title_font_color="#765F4B",
+                title_font_size=20,
+                font={"family": "DM Sans", "color": "#765F4B"},
+                plot_bgcolor="#FFFFFF",
+                paper_bgcolor="#FFFFFF",
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+
 
 
 
