@@ -273,10 +273,9 @@ with tab_dash:
             dashboard_df["Store ID"].isin(matching_store_ids)
         ]
 
-    if "Revenue" in df.columns:
-        result = analytics.get_total(dashboard_df, "Revenue")
-        st.write(result)
-        st.metric("Total Revenue", f"${result.value:,.2f}")
+    if "Revenue" in dashboard_df.columns:
+        total_revenue = dashboard_df["Revenue"].sum()
+        st.metric("Total Revenue", f"${total_revenue:,.2f}")
     else:
         st.warning("Select the Sales table to view revenue metrics.")
 
