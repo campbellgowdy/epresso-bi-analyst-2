@@ -273,7 +273,7 @@ with tab_dash:
         ]
 
     if "Revenue" in df.columns:
-        result = analytics.get_total(df, "Revenue")
+        result = analytics.get_total(dashboard_df, "Revenue")
         st.metric("Total Revenue", f"${result.value:,.2f}")
     else:
         st.warning("Select the Sales table to view revenue metrics.")
