@@ -251,6 +251,10 @@ with tab_dash:
         .dashboard-header {
             text-align: center;
             background-color: #EFF5F9;
+            background-image:
+                linear-gradient(rgba(108, 157, 187, 0.10) 50%, transparent 50%),
+                linear-gradient(90deg, rgba(108, 157, 187, 0.10) 50%, transparent 50%);
+            background-size: 28px 28px;
             padding: 30px 15px 25px 15px;
             border-radius: 14px;
             border: 1px solid #D9E8F2;
@@ -275,7 +279,7 @@ with tab_dash:
 
         <div class="dashboard-header">
             <h1>E-Presso | Business Performance</h1>
-            <p>Sales performance, store comparisons, and business insights</p>
+            <p>Sales Performance, Store Comparisons, and Business Insights</p>
         </div>
         """,
         unsafe_allow_html=True,
