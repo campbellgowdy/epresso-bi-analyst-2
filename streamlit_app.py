@@ -303,7 +303,6 @@ with tab_dash:
                 .sort_values("Revenue", ascending=True)
             )
 
-            st.write(category_revenue)
 
             import plotly.express as px
 
