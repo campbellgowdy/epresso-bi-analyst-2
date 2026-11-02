@@ -244,6 +244,10 @@ with tab_data:
 
 with tab_dash:
     st.subheader("E-Presso Business Dashboard")
+    store_type_filter = st.selectbox(
+        "Filter by Store Type",
+        options=["All Store Types", "Website", "Brick/Mortar"],
+    )
 
     if "Revenue" in df.columns:
         result = analytics.get_total(df, "Revenue")
