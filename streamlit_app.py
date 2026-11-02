@@ -392,7 +392,7 @@ with tab_dash:
                     f"**{top_category['Category']}** "
                     f"(${top_category['Revenue']:,.2f} in revenue)"
                 )
-            )
+            
 
             fig = px.bar(
                 category_revenue,
