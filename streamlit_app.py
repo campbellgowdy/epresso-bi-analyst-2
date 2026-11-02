@@ -388,33 +388,33 @@ else:
             
             import plotly.express as px
 
-fig = px.bar(
-    category_revenue,
-    x="Revenue",
-    y="Category",
-    orientation="h",
-    title="Revenue by Category",
-    text_auto=",.0f",
-    color_discrete_sequence=["#8B684B"],
+    fig = px.bar(
+        category_revenue,
+        x="Revenue",
+        y="Category",
+        orientation="h",
+        title="Revenue by Category",
+        text_auto=",.0f",
+        color_discrete_sequence=["#8B684B"],
 )
 
-fig.update_layout(
-    yaxis_title="Category",
-    xaxis_title="Revenue ($)",
-    yaxis={"categoryorder": "total ascending"},
-    xaxis={"autorange": True},
-    height=400,
-    title_font_color="#765F4B",
-    title_font_size=20,
-    font={"family": "DM Sans", "color": "#765F4B"},
-    plot_bgcolor="#FFFFFF",
-    paper_bgcolor="#FFFFFF",
+    fig.update_layout(
+        yaxis_title="Category",
+        xaxis_title="Revenue ($)",
+        yaxis={"categoryorder": "total ascending"},
+        xaxis={"autorange": True},
+        height=400,
+        title_font_color="#765F4B",
+        title_font_size=20,
+        font={"family": "DM Sans", "color": "#765F4B"},
+        plot_bgcolor="#FFFFFF",
+        paper_bgcolor="#FFFFFF",
 )
 
-fig.update_traces(
-    marker_line_color="#B59E82",
-    marker_line_width=1,
-    textfont_color="#FFFFFF",
+    fig.update_traces(
+        marker_line_color="#B59E82",
+        marker_line_width=1,
+        textfont_color="#FFFFFF",
 )
 
 st.plotly_chart(fig, use_container_width=True)
