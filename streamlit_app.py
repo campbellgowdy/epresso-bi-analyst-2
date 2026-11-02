@@ -336,11 +336,29 @@ with tab_dash:
             dashboard_df["Store ID"].isin(matching_store_ids)
         ]
 
-    if "Revenue" in dashboard_df.columns:
-        total_revenue = dashboard_df["Revenue"].sum()
+if "Revenue" in dashboard_df.columns:
+    total_revenue = dashboard_df["Revenue"].sum()
+    transaction_count = dashboard_df["Sales ID"].nunique()
+
+    average_revenue = (
+        total_revenue / transaction_count
+        if transaction_count > 0
+        else 0
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
         st.metric("Total Revenue", f"${total_revenue:,.2f}")
-    else:
-        st.warning("Select the Sales table to view revenue metrics.")
+
+    with col2:
+        st.metric("Sales Transactions", f"{transaction_count:,}")
+
+    with col3:
+        st.metric("Average Revenue per Transaction", f"${average_revenue:,.2f}")
+
+else:
+    st.warning("Select the Sales table to view revenue metrics.")
 
 
 
