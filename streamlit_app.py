@@ -283,7 +283,8 @@ with tab_dash:
 
     st.markdown("### 🔎 Dashboard Filters")
     st.caption("Use the filter below to customize the dashboard results.")
-        store_type_filter = st.selectbox(
+
+    store_type_filter = st.selectbox(
         "🏪 Store Type",
         options=["All Store Types", "Website", "Brick & Mortar"],
     )
