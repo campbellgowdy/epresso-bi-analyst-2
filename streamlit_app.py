@@ -249,9 +249,9 @@ with tab_dash:
     st.caption("Use the filter below to customize the dashboard results.")
 
     store_type_filter = st.selectbox(
-        "🏪 Store Type",
-        options=["All Store Types", "Website", "Brick/Mortar"],
-    )
+    "🏪 Store Type",
+    options=["All Store Types", "Website", "Brick & Mortar"],
+)
 
     dashboard_df = df.copy()
 
