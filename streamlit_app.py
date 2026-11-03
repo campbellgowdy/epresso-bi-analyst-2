@@ -123,7 +123,7 @@ h3 {
     unsafe_allow_html=True,
 )
 
-st.title("☕ E-Presso Data Explorer")
+st.title("E-Presso Data Explorer ☕")
 st.caption("Explore data, check data quality, and ask questions about a loaded table.")
 
 
