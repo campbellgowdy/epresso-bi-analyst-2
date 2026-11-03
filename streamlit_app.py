@@ -449,15 +449,7 @@ with tab_dash:
             font-weight: 800;
         }
         /* Consistent text color throughout E-Presso */
-.stApp,
-.stApp p,
-.stApp label,
-.stApp li,
-.stApp span,
-.stApp [data-testid="stMarkdownContainer"],
-.stApp [data-testid="stWidgetLabel"],
-.stApp [data-testid="stCaptionContainer"] {
-    color: #765238 !important;
+
 }
         </style>
 
