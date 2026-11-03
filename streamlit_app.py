@@ -111,12 +111,21 @@ h3 {
         border-radius: 8px;
     }
 
-    /* Dataframes */
-    [data-testid="stDataFrame"] {
-        border: 1px solid #E8DED0;
-        border-radius: 10px;
-        overflow: hidden;
-    }
+/* Dataframes - soft gingham accents */
+[data-testid="stDataFrame"] {
+    border: 1px solid #D8C7B5;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #FBF8F2;
+}
+
+/* Table header styling */
+[data-testid="stDataFrame"] [role="columnheader"] {
+    background-color: #EDE2D3 !important;
+    color: #765238 !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 700 !important;
+}
 
     </style>
     """,
