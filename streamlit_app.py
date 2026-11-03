@@ -436,6 +436,17 @@ with tab_dash:
             color: #8B684B;
             font-weight: 800;
         }
+        /* Consistent text color throughout E-Presso */
+.stApp,
+.stApp p,
+.stApp label,
+.stApp li,
+.stApp span,
+.stApp [data-testid="stMarkdownContainer"],
+.stApp [data-testid="stWidgetLabel"],
+.stApp [data-testid="stCaptionContainer"] {
+    color: #765238 !important;
+}
         </style>
 
         <div class="dashboard-header">
