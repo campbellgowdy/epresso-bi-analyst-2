@@ -362,10 +362,22 @@ with tab_data:
             result["table"] = table_name
             results.append(result)
 
-    if results:
-        st.dataframe(results, use_container_width=True)
-    else:
-        st.info("No recognized ID column was found in this dataset.")
+if results:
+    results_df = pd.DataFrame(results)
+
+    # Add visual indicators for validation results
+    for column in ["exists", "is_unique"]:
+        if column in results_df.columns:
+            results_df[column] = results_df[column].map(
+                lambda value: "🟢 ✓" if value is True
+                else "🔴 ✕" if value is False
+                else value
+            )
+
+    st.dataframe(results_df, use_container_width=True)
+
+else:
+    st.info("No recognized ID column was found in this dataset.")
 
 
 
