@@ -56,11 +56,42 @@ def run_tool(name: str, args: dict, df, log: list) -> ToolResult:
 
 
 def rules_router(question: str, df):
-    """Option B router. TODO: add rules for the tools YOU build.
-    Returns (tool_name, arguments) or None if the question is unsupported."""
+    """Choose an approved analytical tool based on the question."""
     q = question.lower()
+
+    # Data quality questions
     if any(w in q for w in ('missing', 'duplicate', 'quality', 'blank')):
         return 'data_quality_report', {}
+
+    # Total revenue questions
+    if any(w in q for w in ('total revenue', 'revenue total', 'sum of revenue')):
+        if 'Revenue' in df.columns:
+            return 'get_total', {'value_col': 'Revenue'}
+        return None
+
+    # Revenue by category
+    if 'revenue' in q and 'category' in q:
+        if 'Revenue' in df.columns:
+            if 'Category' in df.columns:
+                group_col = 'Category'
+            elif 'Category ID' in df.columns:
+                group_col = 'Category ID'
+            else:
+                return None
+
+            return 'group_total', {
+                'value_col': 'Revenue',
+                'group_col': group_col
+            }
+
+    # Revenue by store type, if that field is available
+    if 'revenue' in q and 'store type' in q:
+        if 'Revenue' in df.columns and 'StoreType' in df.columns:
+            return 'group_total', {
+                'value_col': 'Revenue',
+                'group_col': 'StoreType'
+            }
+
     return None
 
 
