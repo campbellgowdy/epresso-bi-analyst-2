@@ -108,13 +108,15 @@ def format_findings(result: ToolResult) -> str:
     if result.tool == 'get_total':
         return f"Sum of Revenue: ${result.value:,.2f}"
 
-    if result.tool == 'group_total':
-        lines = ["Revenue by category:"]
-        for group, amount in sorted(
-            result.value.items(),
-            key=lambda item: item[1],
-            reverse=True
-        ):
+if result.tool == 'group_total':
+    lines = ["Revenue by group:"]
+    for group, amount in sorted(
+        result.value.items(),
+        key=lambda item: item[1],
+        reverse=True
+    ):
+        lines.append(f"- {group}: ${amount:,.2f}")
+    return "\n".join(lines)
             lines.append(f"- {group}: ${amount:,.2f}")
         return "\n".join(lines)
 
