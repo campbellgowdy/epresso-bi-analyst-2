@@ -64,7 +64,7 @@ def rules_router(question: str, df):
         return 'data_quality_report', {}
 
     # Total revenue questions
-    if any(w in q for w in ('total revenue', 'revenue total', 'sum of revenue')) and 'category' not in q:
+    if any(w in q for w in ('total revenue', 'revenue total', 'sum of revenue')) and 'category' not in q and 'store type' not in q:
         if 'Revenue' in df.columns:
             return 'get_total', {'value_col': 'Revenue'}
         return None
