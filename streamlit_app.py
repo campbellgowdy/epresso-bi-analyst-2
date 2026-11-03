@@ -806,7 +806,7 @@ if (
             )
         else:
             st.session_state["n_questions"] += 1
-            answer = agent.answer_question(question, df, mode="rules")
+            answer = agent.answer_question(question, assistant_df, mode="rules")
             st.session_state["history"].append(
                 {"question": question, "answer": answer}
             )
