@@ -450,7 +450,6 @@ with tab_dash:
         }
         /* Consistent text color throughout E-Presso */
 
-}
         </style>
 
         <div class="dashboard-header">
