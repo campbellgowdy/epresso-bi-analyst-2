@@ -765,6 +765,7 @@ with tab_dash:
 
 
 
+
 with tab_assistant:
     st.caption("Mode: rules-based assistant using approved analytical functions.")
     st.session_state.setdefault("n_questions", 0)
@@ -783,22 +784,38 @@ with tab_assistant:
             with st.expander("Tool-call log"):
                 st.json(item["answer"]["tool_log"])
 
-    question = st.chat_input("Ask a question about the loaded data")
+    # Prepare data for the assistant
+    assistant_df = df.copy()
 
-assistant_df = df.copy()
+    if (
+        "Revenue" in assistant_df.columns
+        and "Store ID" in assistant_df.columns
+        and relationship_tables
+        and "Stores" in relationship_tables
+    ):
+        assistant_df = assistant_df.merge(
+            relationship_tables["Stores"][["ID", "StoreType"]],
+            left_on="Store ID",
+            right_on="ID",
+            how="left",
+        )
 
-if (
-    "Revenue" in assistant_df.columns
-    and "Store ID" in assistant_df.columns
-    and relationship_tables
-    and "Stores" in relationship_tables
-):
-    assistant_df = assistant_df.merge(
-        relationship_tables["Stores"][["ID", "StoreType"]],
-        left_on="Store ID",
-        right_on="ID",
-        how="left",
+    # Question box heading
+    st.markdown(
+        """
+        <div style="font-size: 19px; font-weight: 700; color: #765238;
+                    margin-top: 18px; margin-bottom: 8px;">
+            🔍 What would you like to know about your data?
+        </div>
+        <div style="font-size: 13px; color: #8B684B; margin-bottom: 8px;">
+            Ask about revenue, categories, store types, or data quality.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
+
+    question = st.chat_input("Type your question here...")
+
     if question:
         if st.session_state["n_questions"] >= MAX_QUESTIONS:
             st.warning(
@@ -806,9 +823,81 @@ if (
             )
         else:
             st.session_state["n_questions"] += 1
-            answer = agent.answer_question(question, assistant_df, mode="rules")
+
+            thinking = st.empty()
+            thinking.markdown(
+                """
+                <style>
+                @keyframes coffee-fill {
+                    from { height: 8px; }
+                    to { height: 48px; }
+                }
+                @keyframes coffee-steam {
+                    0% { opacity: 0; transform: translateY(5px); }
+                    50% { opacity: 1; }
+                    100% { opacity: 0; transform: translateY(-8px); }
+                }
+                .coffee-pot {
+                    width: 54px;
+                    height: 65px;
+                    border: 3px solid #765238;
+                    border-radius: 8px 8px 15px 15px;
+                    position: relative;
+                    overflow: hidden;
+                    margin: 8px auto;
+                    background: #FBF8F2;
+                }
+                .coffee-liquid {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 8px;
+                    background: #9B633B;
+                    animation: coffee-fill 2.5s ease-in-out infinite alternate;
+                }
+                .coffee-handle {
+                    position: absolute;
+                    right: -17px;
+                    top: 17px;
+                    width: 14px;
+                    height: 25px;
+                    border: 3px solid #765238;
+                    border-radius: 0 12px 12px 0;
+                }
+                .coffee-steam {
+                    color: #9B8068;
+                    font-size: 18px;
+                    text-align: center;
+                    animation: coffee-steam 1.5s ease-in-out infinite;
+                }
+                </style>
+                <div style="text-align:center; color:#765238;">
+                    <div class="coffee-steam">〰 〰</div>
+                    <div style="display:inline-block; position:relative;">
+                        <div class="coffee-pot">
+                            <div class="coffee-liquid"></div>
+                        </div>
+                        <div class="coffee-handle"></div>
+                    </div>
+                    <div style="font-weight:700; font-size:17px;">
+                        Brewing your answer...
+                    </div>
+                    <div style="font-size:13px; color:#8B684B;">
+                        Just a moment while E-Presso prepares your insights.
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            answer = agent.answer_question(
+                question, assistant_df, mode="rules"
+            )
+
+            thinking.empty()
+
             st.session_state["history"].append(
                 {"question": question, "answer": answer}
             )
             st.rerun()
-
