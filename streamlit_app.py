@@ -813,6 +813,17 @@ with tab_assistant:
             right_on="ID",
             how="left",
         )
+        # Add category names for revenue-by-category questions
+    if (
+        "Category ID" in assistant_df.columns
+        and relationship_tables
+        and "Categories" in relationship_tables
+    ):
+        assistant_df = assistant_df.merge(
+            relationship_tables["Categories"][["Category ID", "Category"]],
+            on="Category ID",
+            how="left",
+        )
 
     # Question box heading
     st.markdown(
