@@ -42,22 +42,26 @@ st.markdown(
     }
 
 /* Headings */
-h1, h2, h3 {
-    font-family: 'Dancing Script', cursive;
-    color: #8B684B;
-    font-weight: 700;
+h1, h2, h3,
+h1 *, h2 *, h3 *,
+[data-testid="stHeading"] h1,
+[data-testid="stHeading"] h2,
+[data-testid="stHeading"] h3 {
+    font-family: 'Dancing Script', cursive !important;
+    color: #8B684B !important;
+    font-weight: 700 !important;
 }
 
 h1 {
-    font-size: 48px;
+    font-size: 48px !important;
 }
 
 h2 {
-    font-size: 36px;
+    font-size: 36px !important;
 }
 
 h3 {
-    font-size: 28px;
+    font-size: 28px !important;
 }
 
     /* Regular text */
