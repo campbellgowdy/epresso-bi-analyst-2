@@ -785,6 +785,20 @@ with tab_assistant:
 
     question = st.chat_input("Ask a question about the loaded data")
 
+assistant_df = df.copy()
+
+if (
+    "Revenue" in assistant_df.columns
+    and "Store ID" in assistant_df.columns
+    and relationship_tables
+    and "Stores" in relationship_tables
+):
+    assistant_df = assistant_df.merge(
+        relationship_tables["Stores"][["ID", "StoreType"]],
+        left_on="Store ID",
+        right_on="ID",
+        how="left",
+    )
     if question:
         if st.session_state["n_questions"] >= MAX_QUESTIONS:
             st.warning(
