@@ -13,6 +13,97 @@ MAX_QUESTIONS = 15
 DATA_DIR = Path(__file__).parent / "data"
 
 st.set_page_config(page_title="E-Presso Data Explorer", layout="wide")
+
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+    /* Main app background */
+    .stApp {
+        background-color: #FAF8F4;
+        font-family: 'DM Sans', sans-serif;
+        color: #765F4B;
+    }
+
+    /* Brown gingham page background */
+    [data-testid="stAppViewContainer"] {
+        background-color: #FAF8F4;
+        background-image:
+            linear-gradient(rgba(181, 158, 130, 0.10) 50%, transparent 50%),
+            linear-gradient(90deg, rgba(181, 158, 130, 0.10) 50%, transparent 50%);
+        background-size: 32px 32px;
+    }
+
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #F1E9DE;
+        border-right: 1px solid #E8DED0;
+    }
+
+    /* Headings */
+    h1, h2, h3 {
+        font-family: 'DM Sans', sans-serif;
+        color: #8B684B;
+        font-weight: 800;
+    }
+
+    /* Regular text */
+    p, label, [data-testid="stCaptionContainer"] {
+        color: #765F4B;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    /* Metric cards */
+    div[data-testid="stMetric"] {
+        background-color: #FAF8F4;
+        border: 1px solid #E8DED0;
+        border-radius: 12px;
+        padding: 18px 20px;
+    }
+
+    div[data-testid="stMetricLabel"] {
+        color: #765F4B;
+        font-weight: 600;
+    }
+
+    div[data-testid="stMetricValue"] {
+        color: #8B684B;
+        font-weight: 800;
+    }
+
+    /* Tabs */
+    button[data-baseweb="tab"] {
+        color: #765F4B;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 600;
+    }
+
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: #8B684B;
+        border-bottom-color: #8B684B;
+    }
+
+    /* Buttons */
+    .stButton button {
+        background-color: #8B684B;
+        color: #FFFFFF;
+        border: 1px solid #8B684B;
+        border-radius: 8px;
+    }
+
+    /* Dataframes */
+    [data-testid="stDataFrame"] {
+        border: 1px solid #E8DED0;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.title("E-Presso Data Explorer")
 st.caption("Explore data, check data quality, and ask questions about a loaded table.")
 
