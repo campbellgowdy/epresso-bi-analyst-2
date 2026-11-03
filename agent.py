@@ -104,7 +104,29 @@ def llm_router(question: str, df):
 def format_findings(result: ToolResult) -> str:
     if result.error:
         return f'The request could not be completed: {result.error}'
-    return f'{result.definition}: {result.value}  (rows used: {result.rows_used})'
+
+    if result.tool == 'get_total':
+        return f"Sum of Revenue: ${result.value:,.2f}"
+
+    if result.tool == 'group_total':
+        lines = ["Revenue by category:"]
+        for group, amount in sorted(
+            result.value.items(),
+            key=lambda item: item[1],
+            reverse=True
+        ):
+            lines.append(f"- {group}: ${amount:,.2f}")
+        return "\n".join(lines)
+
+    if result.tool == 'data_quality_report':
+        return (
+            f"Records reviewed: {result.value['rows']:,}\n"
+            f"Duplicate rows: {result.value['duplicate_rows']:,}\n"
+            f"Columns with missing information: "
+            f"{len(result.value['columns_with_missing'])}"
+        )
+
+    return f'{result.definition}: {result.value}'
 
 
 def answer_question(question: str, df, mode: str = 'rules') -> dict:
