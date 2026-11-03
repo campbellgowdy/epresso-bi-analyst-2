@@ -128,6 +128,8 @@ def format_findings(result: ToolResult) -> str:
 
     return f'{result.definition}: {result.value}'
 
+    return f'{result.definition}: {result.value}'
+
 
 def answer_question(question: str, df, mode: str = 'rules') -> dict:
     log: list = []
