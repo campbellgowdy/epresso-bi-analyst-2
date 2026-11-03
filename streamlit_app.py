@@ -51,7 +51,7 @@ h1 *, h2 *, h3 *,
 [data-testid="stHeading"] h2,
 [data-testid="stHeading"] h3 {
     font-family: 'Dancing Script', cursive !important;
-    color: #8B684B !important;
+    color: #765238 !important;
     font-weight: 700 !important;
     text-transform: capitalize !important;
 }
@@ -123,7 +123,7 @@ h3 {
     unsafe_allow_html=True,
 )
 
-st.title("E-Presso Data Explorer")
+st.title("☕ E-Presso Data Explorer")
 st.caption("Explore data, check data quality, and ask questions about a loaded table.")
 
 
