@@ -84,7 +84,7 @@ def rules_router(question: str, df):
                 'group_col': group_col
             }
 
-    # Revenue by store type, if that field is available
+    # Revenue by store type
     if 'revenue' in q and 'store type' in q:
         if 'Revenue' in df.columns and 'StoreType' in df.columns:
             return 'group_total', {
