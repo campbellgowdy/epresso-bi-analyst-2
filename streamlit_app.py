@@ -133,7 +133,7 @@ h3 {
 }
 /* Darker outlines for dropdown menus */
 [data-testid="stSelectbox"] [data-baseweb="select"] > div {
-    border: 2px solid #A98768 !important;
+    border: 2px solid #8B684B !important;
     border-radius: 8px !important;
     background-color: #FBF8F2 !important;
 }
