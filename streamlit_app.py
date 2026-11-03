@@ -41,12 +41,24 @@ st.markdown(
         border-right: 1px solid #E8DED0;
     }
 
-    /* Headings */
-    h1, h2, h3 {
-        font-family: 'DM Sans', sans-serif;
-        color: #8B684B;
-        font-weight: 800;
-    }
+/* Headings */
+h1, h2, h3 {
+    font-family: 'Dancing Script', cursive;
+    color: #8B684B;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+h2 {
+    font-size: 36px;
+}
+
+h3 {
+    font-size: 28px;
+}
 
     /* Regular text */
     p, label, [data-testid="stCaptionContainer"] {
