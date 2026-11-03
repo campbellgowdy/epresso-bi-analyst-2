@@ -774,7 +774,7 @@ with tab_assistant:
         with st.chat_message("user"):
             st.write(item["question"])
         with st.chat_message("assistant"):
-            st.markdown(f"**Scope:** {item['answer']['scope']}")
+            st.markdown(f"**Answer:** {item['answer']['scope']}")
             st.markdown(f"**Findings:** {item['answer']['findings']}")
             if item["answer"]["interpretation"]:
                 st.markdown(
