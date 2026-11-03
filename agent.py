@@ -109,7 +109,7 @@ def format_findings(result: ToolResult) -> str:
         return f"Sum of Revenue: ${result.value:,.2f}"
 
     if result.tool == 'group_total':
-        lines = ["Revenue by group:"]
+        lines = ["Revenue breakdown:"]
         for group, amount in sorted(
             result.value.items(),
             key=lambda item: item[1],
