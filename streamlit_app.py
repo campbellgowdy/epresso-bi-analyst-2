@@ -111,17 +111,22 @@ h3 {
         border-radius: 8px;
     }
 
-/* Dataframes - soft gingham accents */
+/* Dataframes - vintage gingham style */
 [data-testid="stDataFrame"] {
-    border: 1px solid #D8C7B5;
-    border-radius: 10px;
+    border: 2px solid #CDB69D;
+    border-radius: 12px;
     overflow: hidden;
     background-color: #FBF8F2;
+    box-shadow: 0 2px 8px rgba(118, 82, 56, 0.08);
 }
 
-/* Table header styling */
+/* Soft gingham header */
 [data-testid="stDataFrame"] [role="columnheader"] {
-    background-color: #EDE2D3 !important;
+    background-color: #E8D8C5 !important;
+    background-image:
+        linear-gradient(rgba(139, 104, 75, 0.10) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(139, 104, 75, 0.10) 50%, transparent 50%) !important;
+    background-size: 12px 12px !important;
     color: #765238 !important;
     font-family: 'DM Sans', sans-serif !important;
     font-weight: 700 !important;
