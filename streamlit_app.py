@@ -34,11 +34,15 @@ st.markdown(
     background-size: 5px 5px;
 }
 
-    /* Sidebar */
-    [data-testid="stSidebar"] {
-        background-color: #F1E9DE;
-        border-right: 1px solid #E8DED0;
-    }
+/* Sidebar - soft brown gingham */
+[data-testid="stSidebar"] {
+    background-color: #F1E9DE;
+    background-image:
+        linear-gradient(rgba(139, 104, 75, 0.07) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(139, 104, 75, 0.07) 50%, transparent 50%);
+    background-size: 24px 24px;
+    border-right: 1px solid #D8C7B5;
+}
 
 /* Headings */
 h1, h2, h3,
