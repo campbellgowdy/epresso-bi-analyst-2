@@ -48,8 +48,9 @@ h1 *, h2 *, h3 *,
 [data-testid="stHeading"] h2,
 [data-testid="stHeading"] h3 {
     font-family: 'Dancing Script', cursive !important;
-    color: #8B684B !important;
+    color: #5C3826 !important;
     font-weight: 700 !important;
+    text-transform: capitalize !important;
 }
 
 h1 {
@@ -63,7 +64,6 @@ h2 {
 h3 {
     font-size: 28px !important;
 }
-
     /* Regular text */
     p, label, [data-testid="stCaptionContainer"] {
         color: #765F4B;
