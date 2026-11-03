@@ -131,29 +131,17 @@ h3 {
     font-family: 'DM Sans', sans-serif !important;
     font-weight: 700 !important;
 }
-/* Darker outlines for dropdown menus */
-[data-testid="stSelectbox"] [data-baseweb="select"] > div {
+/* Darker outlines for all dropdowns */
+[data-baseweb="select"] > div {
     border: 2px solid #8B684B !important;
     border-radius: 8px !important;
     background-color: #FBF8F2 !important;
 }
 
 /* Darker outline when dropdown is selected */
-[data-testid="stSelectbox"] [data-baseweb="select"] > div:focus-within {
-    border: 2px solid #765238 !important;
-    box-shadow: 0 0 0 2px rgba(118, 82, 56, 0.12) !important;
-}
-/* More visible dropdown outlines */
-[data-testid="stSelectbox"] [data-baseweb="select"] > div {
-    border: 2px solid #A98768 !important;
-    border-radius: 8px !important;
-    background-color: #FBF8F2 !important;
-}
-
-/* Darker outline when dropdown is selected */
-[data-testid="stSelectbox"] [data-baseweb="select"] > div:focus-within {
-    border: 2px solid #765238 !important;
-    box-shadow: 0 0 0 2px rgba(118, 82, 56, 0.12) !important;
+[data-baseweb="select"] > div:focus-within {
+    border: 2px solid #5E402B !important;
+    box-shadow: 0 0 0 2px rgba(94, 64, 43, 0.15) !important;
 }
 
     </style>
