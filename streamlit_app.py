@@ -302,9 +302,11 @@ else:
     st.warning("No relationship results were generated. Check the table names above.")
 
 
-tab_data, tab_dash, tab_assistant = st.tabs(
-    ["Data and profile", "Dashboard", "Assistant"]
-)
+tab_data, tab_dash, tab_assistant = st.tabs([
+    "✿ Data and Profile",
+    "✧ Dashboard",
+    "♡ Assistant"
+])
 
 with tab_data:
     profile = analytics.profile_table(df)
