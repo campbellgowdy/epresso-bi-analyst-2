@@ -19,21 +19,20 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Dancing+Script:wght@500;600;700&display=swap');
 
-    /* Main app background */
-    .stApp {
-        background-color: #FAF8F4;
-        font-family: 'DM Sans', sans-serif;
-        color: #765F4B;
-    }
+/* Main app background - soft paper */
+.stApp {
+    background-color: #F7F2E9;
+    font-family: 'DM Sans', sans-serif;
+    color: #765F4B;
+}
 
-    /* Brown gingham page background */
-    [data-testid="stAppViewContainer"] {
-        background-color: #FAF8F4;
-        background-image:
-            linear-gradient(rgba(181, 158, 130, 0.10) 50%, transparent 50%),
-            linear-gradient(90deg, rgba(181, 158, 130, 0.10) 50%, transparent 50%);
-        background-size: 32px 32px;
-    }
+/* Warm paper texture */
+[data-testid="stAppViewContainer"] {
+    background-color: #F7F2E9;
+    background-image:
+        radial-gradient(rgba(139, 104, 75, 0.045) 0.7px, transparent 0.7px);
+    background-size: 5px 5px;
+}
 
     /* Sidebar */
     [data-testid="stSidebar"] {
