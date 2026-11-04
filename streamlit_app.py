@@ -17,178 +17,132 @@ st.set_page_config(page_title="E-Presso Data Explorer", layout="wide")
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Dancing+Script:wght@500;600;700&display=swap');
+   
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Dancing+Script:wght@500;600;700&display=swap');
 
-/* Main app background - soft paper */
-.stApp {
-    background-color: #F7F2E9;
-    font-family: 'DM Sans', sans-serif;
-    color: #765F4B;
-}
-
-/* Warm paper texture */
+/* Main app background */
+.stApp,
 [data-testid="stAppViewContainer"] {
-    background-color: #F7F2E9;
-    background-image:
-        radial-gradient(rgba(139, 104, 75, 0.045) 0.7px, transparent 0.7px);
-    background-size: 5px 5px;
+    background-color: #FFF7F0 !important;
+    color: #642F20 !important;
+    font-family: 'DM Sans', sans-serif;
 }
 
-/* Sidebar - soft brown gingham */
-[data-testid="stSidebar"] {
-    background-color: #F1E9DE;
+/* Soft paper texture */
+[data-testid="stAppViewContainer"] {
     background-image:
-        linear-gradient(rgba(139, 104, 75, 0.07) 50%, transparent 50%),
-        linear-gradient(90deg, rgba(139, 104, 75, 0.07) 50%, transparent 50%);
-    background-size: 24px 24px;
-    border-right: 1px solid #D8C7B5;
+        radial-gradient(rgba(216, 143, 145, 0.07) 0.7px, transparent 0.7px);
+    background-size: 6px 6px;
+}
+
+/* Pink gingham sidebar */
+[data-testid="stSidebar"] > div:first-child {
+    background-color: #FBE5E0 !important;
+    background-image:
+        linear-gradient(rgba(216, 143, 145, 0.13) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(216, 143, 145, 0.13) 50%, transparent 50%);
+    background-size: 26px 26px;
+    border-right: 1px solid #E8C4BE;
 }
 
 /* Headings */
 h1, h2, h3,
-h1 *, h2 *, h3 *,
 [data-testid="stHeading"] h1,
 [data-testid="stHeading"] h2,
 [data-testid="stHeading"] h3 {
     font-family: 'Dancing Script', cursive !important;
-    color: #765238 !important;
-    font-weight: 700 !important;
-    text-transform: capitalize !important;
-}
-
-h1 {
-    font-size: 48px !important;
-}
-
-h2 {
-    font-size: 36px !important;
-}
-
-h3 {
-    font-size: 28px !important;
-}
-    /* Regular text */
-    p, label, [data-testid="stCaptionContainer"] {
-        color: #765F4B;
-        font-family: 'DM Sans', sans-serif;
-    }
-
-    /* Metric cards */
-    div[data-testid="stMetric"] {
-        background-color: #FAF8F4;
-        border: 1px solid #E8DED0;
-        border-radius: 12px;
-        padding: 18px 20px;
-    }
-
-    div[data-testid="stMetricLabel"] {
-        color: #765F4B;
-        font-weight: 600;
-    }
-
-    div[data-testid="stMetricValue"] {
-        color: #8B684B;
-        font-weight: 800;
-    }
-
-    /* Tabs */
-    button[data-baseweb="tab"] {
-        color: #765F4B;
-        font-family: 'DM Sans', sans-serif;
-        font-weight: 600;
-    }
-
-    button[data-baseweb="tab"][aria-selected="true"] {
-        color: #8B684B;
-        border-bottom-color: #8B684B;
-    }
-
-    /* Buttons */
-    .stButton button {
-        background-color: #8B684B;
-        color: #FFFFFF;
-        border: 1px solid #8B684B;
-        border-radius: 8px;
-    }
-
-/* Dataframes - vintage gingham style */
-[data-testid="stDataFrame"] {
-    border: 2px solid #CDB69D;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #FBF8F2;
-    box-shadow: 0 2px 8px rgba(118, 82, 56, 0.08);
-}
-
-/* Soft gingham header */
-[data-testid="stDataFrame"] [role="columnheader"] {
-    background-color: #E8D8C5 !important;
-    background-image:
-        linear-gradient(rgba(139, 104, 75, 0.10) 50%, transparent 50%),
-        linear-gradient(90deg, rgba(139, 104, 75, 0.10) 50%, transparent 50%) !important;
-    background-size: 12px 12px !important;
-    color: #765238 !important;
-    font-family: 'DM Sans', sans-serif !important;
-    font-weight: 700 !important;
-}
-/* Darker outlines for all dropdowns */
-[data-baseweb="select"] > div {
-    border: 2px solid #8B684B !important;
-    border-radius: 8px !important;
-    background-color: #FBF8F2 !important;
-}
-
-/* Darker outline when dropdown is selected */
-[data-baseweb="select"] > div:focus-within {
-    border: 2px solid #5E402B !important;
-    box-shadow: 0 0 0 2px rgba(94, 64, 43, 0.15) !important;
-}
-
- 
-/* E-Presso blush pink and cream palette */
-
-/* Main background and text */
-.stApp {
-    background-color: #FFF7F0 !important;
-    color: #5A3024 !important;
-}
-
-/* Sidebar - soft pink gingham */
-[data-testid="stSidebar"] > div:first-child {
-    background-color: #FBE5E0 !important;
-    background-image:
-        linear-gradient(90deg, rgba(231, 151, 151, 0.15) 50%, transparent 50%),
-        linear-gradient(rgba(231, 151, 151, 0.15) 50%, transparent 50%);
-    background-size: 28px 28px;
-}
-
-/* Headings */
-h1, h2, h3 {
     color: #642F20 !important;
+    font-weight: 700 !important;
 }
+
+/* Heading sizes */
+h1 { font-size: 48px !important; }
+h2 { font-size: 36px !important; }
+h3 { font-size: 28px !important; }
 
 /* Regular text */
 .stApp p,
 .stApp label,
 .stApp li,
-.stApp [data-testid="stMarkdownContainer"] {
-    color: #5A3024 !important;
+.stApp [data-testid="stMarkdownContainer"],
+[data-testid="stCaptionContainer"] {
+    color: #642F20;
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* Metric cards */
+div[data-testid="stMetric"] {
+    background-color: #FFF9F4;
+    border: 1px solid #E8C4BE;
+    border-radius: 14px;
+    padding: 18px 20px;
+}
+
+div[data-testid="stMetricLabel"] {
+    color: #805348 !important;
+    font-weight: 600;
+}
+
+div[data-testid="stMetricValue"] {
+    color: #642F20 !important;
+    font-weight: 800;
+}
+
+/* Tabs */
+button[data-baseweb="tab"] {
+    color: #805348 !important;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+    color: #642F20 !important;
+    border-bottom-color: #D88F91 !important;
 }
 
 /* Buttons */
 .stButton > button {
-    background-color: #E58F91 !important;
+    background-color: #D88F91 !important;
     color: #FFFFFF !important;
-    border: 1px solid #D77D81 !important;
+    border: 1px solid #C77B70 !important;
     border-radius: 10px !important;
+}
+
+.stButton > button:hover {
+    background-color: #C77B70 !important;
+    border-color: #C77B70 !important;
+    color: #FFFFFF !important;
+}
+
+/* Dataframes */
+[data-testid="stDataFrame"] {
+    border: 1px solid #E8C4BE;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #FFF9F4;
+    box-shadow: 0 2px 8px rgba(100, 47, 32, 0.06);
+}
+
+/* Dataframe headers */
+[data-testid="stDataFrame"] [role="columnheader"] {
+    background-color: #FBE5E0 !important;
+    color: #642F20 !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 700 !important;
 }
 
 /* Dropdowns */
 [data-baseweb="select"] > div {
-    border: 2px solid #C77B70 !important;
-    background-color: #FFF9F4 !important;
+    border: 1.5px solid #C77B70 !important;
     border-radius: 8px !important;
+    background-color: #FFF9F4 !important;
 }
+
+[data-baseweb="select"] > div:focus-within {
+    border: 2px solid #D88F91 !important;
+    box-shadow: 0 0 0 2px rgba(216, 143, 145, 0.15) !important;
+}
+
 
 
     </style>
