@@ -144,6 +144,53 @@ h3 {
     box-shadow: 0 0 0 2px rgba(94, 64, 43, 0.15) !important;
 }
 
+ 
+/* E-Presso blush pink and cream palette */
+
+/* Main background and text */
+.stApp {
+    background-color: #FFF7F0 !important;
+    color: #5A3024 !important;
+}
+
+/* Sidebar - soft pink gingham */
+[data-testid="stSidebar"] > div:first-child {
+    background-color: #FBE5E0 !important;
+    background-image:
+        linear-gradient(90deg, rgba(231, 151, 151, 0.15) 50%, transparent 50%),
+        linear-gradient(rgba(231, 151, 151, 0.15) 50%, transparent 50%);
+    background-size: 28px 28px;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #642F20 !important;
+}
+
+/* Regular text */
+.stApp p,
+.stApp label,
+.stApp li,
+.stApp [data-testid="stMarkdownContainer"] {
+    color: #5A3024 !important;
+}
+
+/* Buttons */
+.stButton > button {
+    background-color: #E58F91 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #D77D81 !important;
+    border-radius: 10px !important;
+}
+
+/* Dropdowns */
+[data-baseweb="select"] > div {
+    border: 2px solid #C77B70 !important;
+    background-color: #FFF9F4 !important;
+    border-radius: 8px !important;
+}
+
+
     </style>
     """,
     unsafe_allow_html=True,
