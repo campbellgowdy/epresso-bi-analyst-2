@@ -720,11 +720,6 @@ with tab_dash:
                     if total_revenue > 0
                     else 0
                 )
-            with cup_col:
-                st.image(
-                    "assets/epresso_coffee_cups.png",
-                    use_container_width=True
-                )
 
                 st.markdown(
                     f"""
