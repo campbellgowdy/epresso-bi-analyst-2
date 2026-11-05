@@ -738,10 +738,6 @@ with tab_dash:
 
 with tab_assistant:
     st.caption("Mode: rules-based assistant using approved analytical functions.")
-    st.image(
-        "assets/epresso_coffee_cups.png",
-        width=110
-    )
     st.session_state.setdefault("n_questions", 0)
     st.session_state.setdefault("history", [])
 
