@@ -698,7 +698,7 @@ with tab_dash:
             top_category = insight_revenue.idxmax()
             top_category_revenue = insight_revenue.max()
 
-            insight_col1, insight_col2 = st.columns(2)
+            insight_col1, insight_col2, cup_col = st.columns([1, 1, 1])
 
             with insight_col1:
                 st.markdown(
@@ -717,6 +717,11 @@ with tab_dash:
                     top_category_revenue / total_revenue * 100
                     if total_revenue > 0
                     else 0
+                )
+            with cup_col:
+                st.image(
+                    "assets/epresso_coffee_cups.png",
+                    use_container_width=True
                 )
 
                 st.markdown(
