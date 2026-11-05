@@ -465,14 +465,6 @@ with tab_dash:
         unsafe_allow_html=True,
     )
     
-    # Decorative coffee illustration
-    cup_space, cup_image = st.columns([5, 1])
-
-    with cup_image:
-        st.image(
-            "assets/epresso_coffee_cups.png",
-            width=150
-        )
 
     # Dashboard filter
     st.markdown("### 🎀 Dashboard Filters")
