@@ -69,11 +69,12 @@ def _error(tool: str, message: str, scope: dict | None = None) -> ToolResult:
 
 def _apply_filters(df: pd.DataFrame, filters: dict | None):
     """Validate filters against the LOADED data, then apply them."""
+    full_df = df
     for col, wanted in (filters or {}).items():
         if col not in df.columns:
             return df, f'Unknown column: {col}'
         wanted_list = list(wanted) if isinstance(wanted, (list, tuple, set)) else [wanted]
-        valid = set(df[col].dropna().unique())
+        valid = set(full_df[col].dropna().unique())
         bad = [w for w in wanted_list if w not in valid]
         if bad:
             examples = sorted(map(str, valid))[:20]
@@ -124,7 +125,7 @@ def group_total(df: pd.DataFrame, value_col: str, group_col: str,
     return ToolResult(tool=name, value={str(k): float(v) for k, v in grouped.items()},
                       definition=f'Sum of {value_col} by {group_col}',
                       scope={'filters': filters or 'none (all rows)'},
-                      rows_used=int(len(work) - n_bad - n_nogroup), caveats=caveats)
+                      rows_used=int(work[[value_col, group_col]].notna().all(axis=1).sum()), caveats=caveats)
 
 
 def data_quality_report(df: pd.DataFrame) -> ToolResult:
