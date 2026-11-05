@@ -51,6 +51,8 @@ def rules_router(question,df,filters=None):
     for col in ['Category','Product']:
         matches=[str(v) for v in df[col].dropna().unique() if re.search(r'(?<!\w)'+re.escape(str(v).lower())+r'(?!\w)',q)]
         if matches:scope[col]=matches
+    # Data-quality questions must not be mistaken for an unknown city (e.g. 'in the sales data').
+    if any(w in q for w in ['missing','duplicate','quality','blank','null']):return 'quality',{'filters':scope}
     if re.search(r'\bin\s+[a-z]',q) and not city_matches and not any(w in q for w in ['all','website','brick']) and not any(str(v).lower() in q for c in ['Category','Product'] for v in df[c].dropna().unique()): return None
     if re.search(r'for (?:category|product) ',q) and not any(c in scope for c in ['Category','Product']): return None
     if any(w in q for w in ['declin','growth','grew','change','compare years','year over year','year-over-year']):
