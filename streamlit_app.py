@@ -157,6 +157,7 @@ button[data-baseweb="tab"][aria-selected="true"] {
             "assets/epresso_coffee_cups.png",
             width=150
         )
+        )
 
 st.title("E-Presso Data Explorer ☕")
 st.caption("Explore data, check data quality, and ask questions about a loaded table.")
