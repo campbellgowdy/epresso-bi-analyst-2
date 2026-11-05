@@ -149,14 +149,13 @@ button[data-baseweb="tab"][aria-selected="true"] {
     """,
     unsafe_allow_html=True,
 )
-# Decorative coffee illustration
+    # Decorative coffee illustration
     cup_space, cup_image = st.columns([5, 1])
 
     with cup_image:
         st.image(
             "assets/epresso_coffee_cups.png",
             width=150
-        )
         )
 
 st.title("E-Presso Data Explorer ☕")
