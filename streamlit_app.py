@@ -210,12 +210,104 @@ with assistant:
             with st.expander('Tool-call log: function, arguments and raw result'):st.json(a['tool_log'])
     if st.session_state.n_questions>=15:st.warning('Session question limit reached. Start a new browser session for more questions.')
     question=st.chat_input('Ask about the current E-Presso data',disabled=st.session_state.n_questions>=15)
-    if question:
-        with st.spinner('Brewing your answer…'):
-            answer=agent.answer_question(question,sales,mode,filters,key,model)
-        st.session_state.n_questions+=1
-        st.session_state.history.append({'question':question,'answer':answer,'snapshot':fingerprint[:10]})
-        st.rerun()
+if question:
+    brewing = st.empty()
+
+    brewing.markdown("""
+    <style>
+    @keyframes fillCoffee {
+        from { height: 8%; }
+        to { height: 78%; }
+    }
+
+    @keyframes coffeeWave {
+        0%, 100% { transform: translateX(-5%); }
+        50% { transform: translateX(5%); }
+    }
+
+    .coffee-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px;
+        color: #294334;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .coffee-mug {
+        width: 82px;
+        height: 72px;
+        border: 4px solid #496448;
+        border-radius: 8px 8px 24px 24px;
+        background: #FFFCF4;
+        position: relative;
+        overflow: visible;
+    }
+
+    .coffee-mug::after {
+        content: '';
+        position: absolute;
+        width: 24px;
+        height: 34px;
+        border: 4px solid #496448;
+        border-left: 0;
+        border-radius: 0 18px 18px 0;
+        right: -27px;
+        top: 13px;
+    }
+
+    .coffee-liquid {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 8%;
+        background: #98613B;
+        animation: fillCoffee 4s ease-in-out infinite alternate;
+        border-radius: 0 0 18px 18px;
+        overflow: hidden;
+    }
+
+    .coffee-liquid::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: 0;
+        width: 200%;
+        height: 10px;
+        background: #B77B4E;
+        border-radius: 50%;
+        animation: coffeeWave 2s ease-in-out infinite;
+    }
+
+    .coffee-message {
+        margin-top: 18px;
+        font-family: 'Satisfy', cursive;
+        font-size: 25px;
+        color: #496448;
+    }
+    </style>
+
+    <div class="coffee-loading">
+        <div class="coffee-mug">
+            <div class="coffee-liquid"></div>
+        </div>
+        <div class="coffee-message">Brewing your answer...</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    answer = agent.answer_question(
+        question, sales, mode, filters, key, model
+    )
+
+    brewing.empty()
+    st.session_state.n_questions += 1
+    st.session_state.history.append({
+        'question': question,
+        'answer': answer,
+        'snapshot': fingerprint[:10]
+    })
+    st.rerun()
     if st.session_state.history:
         st.download_button('Download assistant evidence',json.dumps(st.session_state.history,indent=2,default=str),'assistant_evidence.json','application/json')
 
