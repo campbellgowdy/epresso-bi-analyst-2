@@ -165,10 +165,10 @@ with dashboard:
     summary=bt.revenue_summary(sales,filters).value
     cols=st.columns(4)
     cols[0].metric('Revenue',f"${summary['revenue']:,.2f}")
-    cols[1].metric('Sales records',f"{summary['sales_records']:,}")
+    cols[1].metric('Sales Records',f"{summary['sales_records']:,}")
     avg=summary['average_revenue_per_record']
-    cols[2].metric('Average / sales record','—' if avg is None else f'${avg:,.2f}')
-    cols[3].metric('Stores represented',summary['stores'])
+    cols[2].metric('Average / Sales Record','—' if avg is None else f'${avg:,.2f}')
+    cols[3].metric('Stores Represented',summary['stores'])
     st.caption('Revenue is the sum of the source Revenue column. A sales record is not necessarily a customer order. Revenue is not profit.')
     if filtered.empty:st.info('No records match this filter combination.')
     else:
