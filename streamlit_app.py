@@ -90,6 +90,7 @@ h1, h2, h3 {
     <p>Your cozy campsite for business insights.</p>
     <div style="font-size:24px;">🌲 🏮 🌲</div>
 </div>
+''', unsafe_allow_html=True)
 
 @st.cache_data(show_spinner=False)
 def cached_sources(sources):
