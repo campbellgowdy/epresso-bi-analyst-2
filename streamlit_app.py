@@ -163,27 +163,34 @@ q1.metric('Sales records analyzed', f"{quality_values.get('rows', 0):,}")
 q2.metric('Duplicate Sales IDs', f"{quality_values.get('duplicate_sales_ids', 0):,}")
 q3.metric('Negative revenue records', f"{quality_values.get('negative_revenue_records', 0):,}")
 
-missing = quality_values.get('missing', {})
+    missing = quality_values.get('missing', {})
 
-if missing:
-    st.markdown('**Missing values in the prepared sales model**')
-    missing_df = pd.DataFrame(
-        [{'Field': field, 'Missing records': count}
-         for field, count in missing.items()]
+    if missing:
+        st.markdown('**Missing values in the prepared sales model**')
+        missing_df = pd.DataFrame(
+            [{'Field': field, 'Missing records': count}
+             for field, count in missing.items()]
+        )
+        st.dataframe(missing_df, hide_index=True, width='stretch')
+
+        st.caption(
+            'Missing City, State, and PostalCode values are expected '
+            'for website sales, which do not have a physical store location.'
+        )
+    else:
+        st.success('No missing values detected in the reported fields.')
+
+    st.caption(
+        f"Scope: {quality.get('scope', {}).get('filters', 'All data')} "
+        f"· Records analyzed: {quality.get('rows_used', 0):,}"
     )
-    st.dataframe(missing_df, hide_index=True, width='stretch')
 
-    st.warning(
-        'Missing store information affects some sales records. '
-        'This does not necessarily mean the sales revenue is invalid.'
+    st.info(
+        'Missing dates are excluded from time charts but remain in total revenue. '
+        'Missing or nonnumeric revenue is excluded and reported. '
+        'Negative revenue is retained and flagged; confirm whether it represents a return. '
+        'Revenue is not profit.'
     )
-else:
-    st.success('No missing values detected in the reported fields.')
-
-st.caption(
-    f"Scope: {quality.get('scope', {}).get('filters', 'All data')} "
-    f"· Records analyzed: {quality.get('rows_used', 0):,}"
-)
 
 st.info('Revenue is not profit.')
 
