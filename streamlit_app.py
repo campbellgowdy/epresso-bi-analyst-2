@@ -54,23 +54,30 @@ h1, h2, h3 {
 }
 
 .hero {
-    background: #E8EDDF;
-    border: 1px solid #C5D0B9;
-    padding: 24px 32px;
-    border-radius: 22px;
+    background: linear-gradient(120deg, #294334, #526B4D);
+    border: 4px solid #D5B875;
+    padding: 28px 32px;
+    border-radius: 18px;
     margin-bottom: 22px;
+    text-align: center;
+    color: #FFF9E9;
+    box-shadow: 0 4px 10px #263D3220;
 }
 
 .hero h1 {
-    margin: 0;
+    color: #FFF4D9 !important;
+    font-size: 48px;
+    margin: 8px 0;
 }
 
 .hero p {
-    color: #526B4D;
+    color: #F1E5C9;
     margin: 6px 0;
+    font-size: 16px;
 }
 
-.eyebrow {
+.hero .eyebrow {
+    color: #E5C995;
     letter-spacing: .15em;
     font-size: 12px;
     font-weight: 700;
