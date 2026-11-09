@@ -14,12 +14,11 @@ import agent
 
 st.set_page_config(page_title='E-Presso · Coffee & clarity',page_icon='☕',layout='wide')
 st.markdown('''<style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Dancing+Script:wght@600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Satisfy&display=swap');
 .stApp {
     background: #F7F2E7;
     color: #293D30;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Satisfy', cursive !important;
 }
 
 [data-testid=stSidebar] {
