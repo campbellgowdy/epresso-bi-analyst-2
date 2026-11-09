@@ -207,11 +207,14 @@ with validation:
     valid=tables['Sales'].copy()
     eligible=valid[pd.to_numeric(valid.Revenue,errors='coerce').notna()]
     if not eligible.empty:
-        chosen=st.selectbox('Sales ID to change',eligible['Sales ID'].tolist())
-        idx=valid.index[valid['Sales ID']==chosen][0]
-        old=float(valid.at[idx,'Revenue']);original_total=float(pd.to_numeric(valid.Revenue,errors='coerce').sum())
-        valid.at[idx,'Revenue']=old+1000
-                       test_details = pd.DataFrame([
+        chosen = st.selectbox('Sales ID to change', eligible['Sales ID'].tolist())
+        idx = valid.index[valid['Sales ID'] == chosen][0]
+        old = float(valid.at[idx, 'Revenue'])
+        original_total = float(pd.to_numeric(valid['Revenue'], errors='coerce').sum())
+
+        valid.at[idx, 'Revenue'] = old + 1000
+
+        test_details = pd.DataFrame([
             {'Test detail': 'Sales ID', 'Value': str(chosen)},
             {'Test detail': 'Date', 'Value': pd.to_datetime(valid.at[idx, 'Date']).strftime('%B %d, %Y')},
             {'Test detail': 'Store ID', 'Value': str(valid.at[idx, 'Store ID'])},
@@ -221,18 +224,21 @@ with validation:
             {'Test detail': 'Predicted unfiltered total', 'Value': f'${original_total + 1000:,.2f}'}
         ])
 
-        st.dataframe(
-            test_details,
-            hide_index=True,
-            width='stretch'
+        st.dataframe(test_details, hide_index=True, width='stretch')
+
+        st.write(
+            'Prediction: the row’s store, year, month, category, product and channel '
+            'totals rise by $1,000. Scopes excluding the row remain unchanged; '
+            'record count and dimension tables remain unchanged. After upload, '
+            'ask the same total-revenue question and inspect the chart points. '
+            'Remove the upload to restore originals.'
         )
 
-        st.dataframe(
-            test_details,
-            hide_index=True,
-            width='stretch'
+        st.download_button(
+            'Download modified Sales CSV',
+            valid.to_csv(index=False).encode(),
+            'Sales_modified_plus_1000.csv',
+            'text/csv'
         )
-        st.write('Prediction: the row’s store, year, month, category, product and channel totals rise by $1,000. Scopes excluding the row remain unchanged; record count and dimension tables remain unchanged. After upload, ask the same total-revenue question and inspect the chart points. Remove the upload to restore originals.')
-        st.download_button('Download modified Sales CSV',valid.to_csv(index=False).encode(),'Sales_modified_plus_1000.csv','text/csv')
     st.subheader('Submission status')
     st.write('Automated evidence and defense notes are included in the project evidence folder. Still required from the team: actual Power BI comparisons, screenshots from the deployed app, confirmation of contributions and reflection, and commits by each teammate. A local test is not proof that the hosted app has been redeployed.')
