@@ -163,7 +163,7 @@ q1.metric('Sales records analyzed', f"{quality_values.get('rows', 0):,}")
 q2.metric('Duplicate Sales IDs', f"{quality_values.get('duplicate_sales_ids', 0):,}")
 q3.metric('Negative revenue records', f"{quality_values.get('negative_revenue_records', 0):,}")
 
-    missing = quality_values.get('missing', {})
+missing = quality_values.get('missing', {})
 
     if missing:
         st.markdown('**Missing values in the prepared sales model**')
