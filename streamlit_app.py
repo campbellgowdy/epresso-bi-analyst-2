@@ -211,8 +211,21 @@ with validation:
         idx=valid.index[valid['Sales ID']==chosen][0]
         old=float(valid.at[idx,'Revenue']);original_total=float(pd.to_numeric(valid.Revenue,errors='coerce').sum())
         valid.at[idx,'Revenue']=old+1000
-        st.write({'Sales ID':str(chosen),'Date':str(valid.at[idx,'Date']),'Store ID':str(valid.at[idx,'Store ID']),
-            'Original revenue':old,'Modified revenue':old+1000,'Predicted unfiltered total':original_total+1000})
+                test_details = pd.DataFrame([
+            {'Test detail': 'Sales ID', 'Value': str(chosen)},
+            {'Test detail': 'Date', 'Value': pd.to_datetime(valid.at[idx, 'Date']).strftime('%B %d, %Y')},
+            {'Test detail': 'Store ID', 'Value': str(valid.at[idx, 'Store ID'])},
+            {'Test detail': 'Original revenue', 'Value': f'${old:,.2f}'},
+            {'Test detail': 'Modified revenue', 'Value': f'${old + 1000:,.2f}'},
+            {'Test detail': 'Expected increase', 'Value': '+$1,000.00'},
+            {'Test detail': 'Predicted unfiltered total', 'Value': f'${original_total + 1000:,.2f}'}
+        ])
+
+        st.dataframe(
+            test_details,
+            hide_index=True,
+            width='stretch'
+        )
         st.write('Prediction: the row’s store, year, month, category, product and channel totals rise by $1,000. Scopes excluding the row remain unchanged; record count and dimension tables remain unchanged. After upload, ask the same total-revenue question and inspect the chart points. Remove the upload to restore originals.')
         st.download_button('Download modified Sales CSV',valid.to_csv(index=False).encode(),'Sales_modified_plus_1000.csv','text/csv')
     st.subheader('Submission status')
