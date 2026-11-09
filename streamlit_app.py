@@ -152,7 +152,41 @@ with profile:
     st.dataframe(pd.DataFrame(merge_reports),width='stretch')
     st.caption('All sales rows are retained. Duplicate or blank dimension keys stop analysis. Unmatched keys remain visible as Unknown; their revenue is retained.')
     st.subheader('Current model quality')
-    st.json(bt.quality(sales,filters).to_dict())
+     
+quality = bt.quality(sales, filters).to_dict()
+quality_values = quality.get('value', {})
+
+st.subheader('Data Quality Overview')
+
+q1, q2, q3 = st.columns(3)
+q1.metric('Sales records analyzed', f"{quality_values.get('rows', 0):,}")
+q2.metric('Duplicate Sales IDs', f"{quality_values.get('duplicate_sales_ids', 0):,}")
+q3.metric('Negative revenue records', f"{quality_values.get('negative_revenue_records', 0):,}")
+
+missing = quality_values.get('missing', {})
+
+if missing:
+    st.markdown('**Missing values in the prepared sales model**')
+    missing_df = pd.DataFrame(
+        [{'Field': field, 'Missing records': count}
+         for field, count in missing.items()]
+    )
+    st.dataframe(missing_df, hide_index=True, width='stretch')
+
+    st.warning(
+        'Missing store information affects some sales records. '
+        'This does not necessarily mean the sales revenue is invalid.'
+    )
+else:
+    st.success('No missing values detected in the reported fields.')
+
+st.caption(
+    f"Scope: {quality.get('scope', {}).get('filters', 'All data')} "
+    f"· Records analyzed: {quality.get('rows_used', 0):,}"
+)
+
+st.info('Revenue is not profit.')
+
     st.info('The website row legitimately has no city, state, or postal code. Missing dates are excluded from time charts but remain in total revenue. Missing or nonnumeric revenue is excluded and reported. Negative revenue is retained and flagged; confirm whether it represents a return.')
 
 with validation:
