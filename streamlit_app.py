@@ -152,26 +152,25 @@ with profile:
     st.dataframe(pd.DataFrame(merge_reports),width='stretch')
     st.caption('All sales rows are retained. Duplicate or blank dimension keys stop analysis. Unmatched keys remain visible as Unknown; their revenue is retained.')
     st.subheader('Current model quality')
-     
-quality = bt.quality(sales, filters).to_dict()
-quality_values = quality.get('value', {})
 
-st.subheader('Data Quality Overview')
+    quality = bt.quality(sales, filters).to_dict()
+    quality_values = quality.get('value', {})
 
-q1, q2, q3 = st.columns(3)
-q1.metric('Sales records analyzed', f"{quality_values.get('rows', 0):,}")
-q2.metric('Duplicate Sales IDs', f"{quality_values.get('duplicate_sales_ids', 0):,}")
-q3.metric('Negative revenue records', f"{quality_values.get('negative_revenue_records', 0):,}")
+    missing = quality_values.get('missing', {})
 
-missing = quality_values.get('missing', {})
+    if missing:
+        st.markdown('**Missing values in the prepared sales model**')
 
-if missing:
-    st.markdown('**Missing values in the prepared sales model**')
-    missing_df = pd.DataFrame(
-        [{'Field': field, 'Missing records': count}
-            for field, count in missing.items()]
+        missing_df = pd.DataFrame([
+            {'Field': field, 'Missing records': count}
+            for field, count in missing.items()
+        ])
+
+        st.dataframe(
+            missing_df,
+            hide_index=True,
+            width='stretch'
         )
-        st.dataframe(missing_df, hide_index=True, width='stretch')
 
         st.caption(
             'Missing City, State, and PostalCode values are expected '
