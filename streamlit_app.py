@@ -124,9 +124,25 @@ st.caption('Scope: '+scope)
 st.caption('Active data: '+('uploaded updates' if uploads else 'repository originals')+' · snapshot '+fingerprint[:10])
 
 def styled(fig):
-    fig.update_layout(paper_bgcolor='#fff7f0',plot_bgcolor='#fffaf6',font={'family':'DM Sans','color':'#642f20'},
-        colorway=['#496448', '#A6B28A', '#C47745', '#D5B875', '#263D32']
-    st.plotly_chart(fig,width='stretch')
+    fig.update_layout(
+        paper_bgcolor='#F7F2E7',
+        plot_bgcolor='#FFFCF4',
+        font={
+            'family': 'DM Sans',
+            'color': '#293D30'
+        },
+        colorway=[
+            '#496448',
+            '#A6B28A',
+            '#C47745',
+            '#D5B875',
+            '#263D32'
+        ],
+        margin=dict(t=28, b=40, l=10, r=10),
+        height=370
+    )
+
+    st.plotly_chart(fig, width='stretch')
 
 def breakdown(group):
     r=bt.revenue_breakdown(sales,group,filters)
