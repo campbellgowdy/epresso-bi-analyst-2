@@ -96,9 +96,9 @@ def cached_sources(sources):
     return dm.load_sources(sources)
 
 with st.sidebar:
-    st.header('Your coffee, your data')
+    st.header('Your Coffee, your Data')
     st.caption('Starts with the supplied E-Presso data. Uploads replace matching tables immediately.')
-    uploads=st.file_uploader('Update data',type=['csv','tsv','txt','xlsx','xlsm','accdb','mdb'],accept_multiple_files=True,
+    uploads=st.file_uploader('Update Data',type=['csv','tsv','txt','xlsx','xlsm','accdb','mdb'],accept_multiple_files=True,
         help='Access: Sales, Products, Categories tables. CSV: one recognized table. Excel: named table sheets, or survey sheets.')
     st.caption('Remove uploaded files to restore the repository data.')
 try:
