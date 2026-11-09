@@ -15,14 +15,72 @@ import agent
 st.set_page_config(page_title='E-Presso · Coffee & clarity',page_icon='☕',layout='wide')
 st.markdown('''<style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Dancing+Script:wght@600;700&display=swap');
-.stApp{background:#fff7f0;color:#642f20;font-family:'DM Sans',sans-serif}
-[data-testid=stSidebar]{background-color:#fbe5e0;background-image:linear-gradient(#d88f9120 50%,transparent 50%),linear-gradient(90deg,#d88f9120 50%,transparent 50%);background-size:26px 26px}
-h1,h2,h3{color:#642f20!important;font-family:'Dancing Script',cursive!important}
-[data-testid=stMetric]{background:#fffaf6;border:1px solid #e8c4be;border-radius:16px;padding:20px}
-[data-testid=stMetricValue]{color:#642f20}.stButton>button{background:#b76a72;color:white;border:0;border-radius:10px}
-.hero{background:#fbe5e0;border:1px solid #e8c4be;padding:24px 32px;border-radius:22px;margin-bottom:22px}
-.hero h1{margin:0}.hero p{color:#805348;margin:6px 0}.eyebrow{letter-spacing:.15em;font-size:12px;font-weight:700}
-</style><div class="hero"><div class="eyebrow">COFFEE • DATA • CLARITY</div><h1>☕ E-Presso</h1><p>A fresh look at how the business is brewing.</p></div>''',unsafe_allow_html=True)
+
+.stApp {
+    background: #F7F2E7;
+    color: #293D30;
+    font-family: 'DM Sans', sans-serif;
+}
+
+[data-testid=stSidebar] {
+    background-color: #E8EDDF;
+    background-image:
+        linear-gradient(#78916A30 50%, transparent 50%),
+        linear-gradient(90deg, #78916A30 50%, transparent 50%);
+    background-size: 28px 28px;
+}
+
+h1, h2, h3 {
+    color: #294334 !important;
+    font-family: 'Dancing Script', cursive !important;
+}
+
+[data-testid=stMetric] {
+    background: #FFFCF4;
+    border: 1px solid #C5D0B9;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+[data-testid=stMetricValue] {
+    color: #294334;
+}
+
+.stButton>button {
+    background: #496448;
+    color: white;
+    border: 0;
+    border-radius: 10px;
+}
+
+.hero {
+    background: #E8EDDF;
+    border: 1px solid #C5D0B9;
+    padding: 24px 32px;
+    border-radius: 22px;
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    margin: 0;
+}
+
+.hero p {
+    color: #526B4D;
+    margin: 6px 0;
+}
+
+.eyebrow {
+    letter-spacing: .15em;
+    font-size: 12px;
+    font-weight: 700;
+}
+</style>
+<div class="hero">
+    <div class="eyebrow">COFFEE • DATA • ADVENTURE</div>
+    <h1>☕ E-Presso</h1>
+    <p>Your outdoor-inspired guide to business performance.</p>
+</div>''', unsafe_allow_html=True)
 
 @st.cache_data(show_spinner=False)
 def cached_sources(sources):
