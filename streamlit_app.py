@@ -25,8 +25,8 @@ st.markdown('''<style>
 [data-testid=stSidebar] {
     background-color: #E8EDDF;
     background-image:
-        linear-gradient(#49644855 50%, transparent 50%),
-        linear-gradient(90deg, #49644855 50%, transparent 50%);
+        linear-gradient(#78916A30 50%, transparent 50%),
+        linear-gradient(90deg, #78916A30 50%, transparent 50%);
     background-size: 28px 28px;
 }
 
