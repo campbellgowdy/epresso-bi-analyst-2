@@ -191,10 +191,6 @@ with profile:
         'Revenue is not profit.'
     )
 
-st.info('Revenue is not profit.')
-
-st.info('The website row legitimately has no city, state, or postal code. Missing dates are excluded from time charts but remain in total revenue. Missing or nonnumeric revenue is excluded and reported. Negative revenue is retained and flagged; confirm whether it represents a return.')
-
 with validation:
     st.subheader('Reconciliation export')
     st.write('These values are calculated from the current data and filters. Compare them with the same scope in Power BI. Power BI results are not available in this repository.')
