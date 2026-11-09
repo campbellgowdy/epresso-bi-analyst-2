@@ -165,11 +165,11 @@ q3.metric('Negative revenue records', f"{quality_values.get('negative_revenue_re
 
 missing = quality_values.get('missing', {})
 
-    if missing:
-        st.markdown('**Missing values in the prepared sales model**')
-        missing_df = pd.DataFrame(
-            [{'Field': field, 'Missing records': count}
-             for field, count in missing.items()]
+if missing:
+    st.markdown('**Missing values in the prepared sales model**')
+    missing_df = pd.DataFrame(
+        [{'Field': field, 'Missing records': count}
+            for field, count in missing.items()]
         )
         st.dataframe(missing_df, hide_index=True, width='stretch')
 
