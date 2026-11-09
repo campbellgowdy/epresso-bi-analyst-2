@@ -83,13 +83,6 @@ h1, h2, h3 {
     font-weight: 700;
 }
 </style>
-<div class="hero">
-    <div class="eyebrow">☕ COFFEE • DATA • ADVENTURE</div>
-    <div style="font-size:38px;">🏕️ 🌲 🏔️ 🌲 ☕</div>
-    <h1>E-Presso</h1>
-    <p>Your cozy campsite for business insights.</p>
-    <div style="font-size:24px;">🌲 🏮 🌲</div>
-</div>
 ''', unsafe_allow_html=True)
 
 st.image(
