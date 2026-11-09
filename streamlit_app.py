@@ -92,6 +92,11 @@ h1, h2, h3 {
 </div>
 ''', unsafe_allow_html=True)
 
+st.image(
+    Path(__file__).parent / "assets" / "e-presso camp.png",
+    use_container_width=True
+)
+
 @st.cache_data(show_spinner=False)
 def cached_sources(sources):
     # The content bytes, not just filenames, are included in Streamlit's cache key.
