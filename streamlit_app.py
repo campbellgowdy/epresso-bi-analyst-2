@@ -125,7 +125,7 @@ st.caption('Active data: '+('uploaded updates' if uploads else 'repository origi
 
 def styled(fig):
     fig.update_layout(paper_bgcolor='#fff7f0',plot_bgcolor='#fffaf6',font={'family':'DM Sans','color':'#642f20'},
-        colorway=['#b76a72','#dda2a4','#8b5d50','#e8c4be','#bca48f'],margin=dict(t=28,b=40,l=10,r=10),height=370)
+        colorway=['#496448', '#A6B28A', '#C47745', '#D5B875', '#263D32']
     st.plotly_chart(fig,width='stretch')
 
 def breakdown(group):
