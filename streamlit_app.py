@@ -211,7 +211,7 @@ with validation:
         idx=valid.index[valid['Sales ID']==chosen][0]
         old=float(valid.at[idx,'Revenue']);original_total=float(pd.to_numeric(valid.Revenue,errors='coerce').sum())
         valid.at[idx,'Revenue']=old+1000
-                test_details = pd.DataFrame([
+                       test_details = pd.DataFrame([
             {'Test detail': 'Sales ID', 'Value': str(chosen)},
             {'Test detail': 'Date', 'Value': pd.to_datetime(valid.at[idx, 'Date']).strftime('%B %d, %Y')},
             {'Test detail': 'Store ID', 'Value': str(valid.at[idx, 'Store ID'])},
@@ -220,6 +220,12 @@ with validation:
             {'Test detail': 'Expected increase', 'Value': '+$1,000.00'},
             {'Test detail': 'Predicted unfiltered total', 'Value': f'${original_total + 1000:,.2f}'}
         ])
+
+        st.dataframe(
+            test_details,
+            hide_index=True,
+            width='stretch'
+        )
 
         st.dataframe(
             test_details,
