@@ -174,14 +174,14 @@ with dashboard:
     else:
         st.subheader('How revenue is brewing')
         monthly=breakdown('Month').sort_values('Month')
-        styled(px.line(monthly,x='Month',y='Revenue',markers=True,labels={'Revenue':'Revenue ($)'},title='Monthly revenue'))
+        styled(px.line(monthly,x='Month',y='Revenue',markers=True,labels={'Revenue':'Revenue ($)'},title='Monthly Revenue'))
         left,right=st.columns(2)
         with left:
             cat=breakdown('Category').sort_values('Revenue')
-            styled(px.bar(cat,x='Revenue',y='Category',orientation='h',labels={'Revenue':'Revenue ($)'},title='Revenue by category'))
+            styled(px.bar(cat,x='Revenue',y='Category',orientation='h',labels={'Revenue':'Revenue ($)'},title='Revenue by Category'))
         with right:
             channel=breakdown('Channel')
-            styled(px.bar(channel,x='Channel',y='Revenue',labels={'Revenue':'Revenue ($)'},title='Revenue by sales channel'))
+            styled(px.bar(channel,x='Channel',y='Revenue',labels={'Revenue':'Revenue ($)'},title='Revenue by Sales Channel'))
         store=breakdown('Store').sort_values('Revenue',ascending=False)
         styled(px.bar(store,x='Store',y='Revenue',labels={'Revenue':'Revenue ($)'},title='Revenue by store'))
         if not cat.empty:
