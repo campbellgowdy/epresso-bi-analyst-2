@@ -160,7 +160,7 @@ def breakdown(group):
     r=bt.revenue_breakdown(sales,group,filters)
     return pd.DataFrame(list(r.value['revenue'].items()),columns=[group,'Revenue'])
 
-dashboard,assistant,profile,validation=st.tabs(['Dashboard','Analytical assistant','Data & quality','Validation lab'])
+dashboard,assistant,profile,validation=st.tabs(['Dashboard','Analytical Assistant','Data & Quality','Validation Lab'])
 with dashboard:
     summary=bt.revenue_summary(sales,filters).value
     cols=st.columns(4)
