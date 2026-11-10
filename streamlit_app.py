@@ -172,7 +172,7 @@ with dashboard:
     st.caption('Revenue is the sum of the source Revenue column. A sales record is not necessarily a customer order. Revenue is not profit.')
     if filtered.empty:st.info('No records match this filter combination.')
     else:
-        st.subheader('How revenue is brewing')
+        st.subheader('How Revenue is Brewing')
         monthly=breakdown('Month').sort_values('Month')
         styled(px.line(monthly,x='Month',y='Revenue',markers=True,labels={'Revenue':'Revenue ($)'},title='Monthly Revenue'))
         left,right=st.columns(2)
