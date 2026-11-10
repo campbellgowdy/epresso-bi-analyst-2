@@ -124,7 +124,7 @@ if st.session_state.get('dataset')!=fingerprint:
 filters={}
 with st.sidebar:
     st.subheader('Analysis Filters')
-    for label,col in [('Year','Year'),('Sales channel','Channel'),('Store','Store ID'),('Category','Category'),('Product','Product')]:
+    for label,col in [('Year','Year'),('Sales Channel','Channel'),('Store','Store ID'),('Category','Category'),('Product','Product')]:
         options=sorted(sales[col].dropna().unique().tolist(),key=str)
         selected=st.multiselect(label,options,key=col+'_'+fingerprint[:10])
         if selected:filters[col]=selected
