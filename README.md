@@ -1,6 +1,6 @@
-# E-Presso · Coffee & clarity
+# E-Presso · Coffee-Data-Adventure
 
-A business intelligence application for the fictional E-Presso coffee business. Managers can explore recorded revenue across time, channels, stores, categories, and products; inspect data quality; replace source tables; and ask a constrained analytical assistant for calculations. Cream, blush pink, and chocolate brown preserve the existing café design.
+A business intelligence application for the fictional E-Presso coffee business. Managers can explore recorded revenue across time, channels, stores, categories, and products; inspect data quality; replace source tables; and ask a constrained analytical assistant for calculations. Outdoor themed, green, and chocolate brown preserve the existing café design.
 
 ## Live application
 
